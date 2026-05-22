@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DeFi Hub — Malaysia Web3</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+.ph-orb-1{width:650px;height:650px;background:radial-gradient(circle,rgba(0,56,147,.22) 0%,transparent 65%);top:-180px;left:-150px}
+.ph-orb-2{width:500px;height:500px;background:radial-gradient(circle,rgba(204,0,1,.12) 0%,transparent 65%);bottom:-100px;right:-100px}
+
+/* YIELD TABLE */
+.yield-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem;margin-top:2rem}
+.yield-card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:1.6rem;
+transition:all .3s;cursor:pointer;position:relative;overflow:hidden}
+.yield-card:hover{border-color:var(--border2);transform:translateY(-3px)}
+.yield-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;transform:scaleX(0);transition:transform .3s;transform-origin:left;background:var(--blue)}
+.yield-card:hover::after{transform:scaleX(1)}
+.yc-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1rem}
+.yc-icon{font-size:1.8rem}
+.yc-apy{background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.2);border-radius:100px;
+padding:4px 12px;font-size:.78rem;font-weight:800;color:#4ADE80}
+.yc-name{font-size:1rem;font-weight:700;margin-bottom:.3rem}
+.yc-desc{font-size:.8rem;color:var(--muted);line-height:1.6;margin-bottom:1rem}
+.yc-meta{display:flex;gap:.5rem;flex-wrap:wrap}
+
+/* CONCEPT CARDS */
+.concept-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.2rem}
+.concept-card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:1.8rem;transition:all .3s}
+.concept-card:hover{border-color:var(--border2)}
+.cc-num{font-size:2.8rem;font-weight:800;letter-spacing:-.04em;line-height:1;
+background:linear-gradient(135deg,var(--blue),#5B8FE8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:.6rem}
+.cc-title{font-size:1rem;font-weight:700;margin-bottom:.4rem}
+.cc-desc{font-size:.82rem;color:var(--muted);line-height:1.65}
+
+/* RISK COLORS */
+.risk-low{color:#4ADE80}.risk-med{color:#FBBF24}.risk-high{color:#F87171}
+
+/* PROTOCOL SECTION */
+.proto-group{margin-bottom:3rem}
+.proto-group-title{font-size:.75rem;font-weight:800;text-transform:uppercase;letter-spacing:.12em;
+color:var(--muted);margin-bottom:1rem;padding-bottom:.5rem;border-bottom:1px solid var(--border);
+display:flex;align-items:center;gap:.5rem}
+.lnk-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:.9rem}
+
+/* APY SIMULATOR */
+.sim-wrap{background:var(--card);border:1px solid var(--border);border-radius:20px;overflow:hidden;max-width:860px;margin:0 auto}
+.sim-header{background:linear-gradient(135deg,rgba(0,56,147,.1),rgba(204,0,1,.05));
+border-bottom:1px solid var(--border);padding:1.6rem 2rem}
+.sim-header h2{font-size:1.2rem;font-weight:800;margin-bottom:.2rem}
+.sim-header p{font-size:.8rem;color:var(--muted)}
+.sim-body{display:grid;grid-template-columns:1fr 1fr;gap:0}
+.sim-inputs{padding:1.8rem;border-right:1px solid var(--border)}
+.sim-result{padding:1.8rem;background:rgba(0,56,147,.03)}
+.fg{margin-bottom:1.2rem}
+.fg label{display:block;font-size:.72rem;font-weight:700;color:var(--muted);
+text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px}
+.fg input,.fg select{width:100%;padding:10px 13px;border-radius:10px;font-size:.88rem;
+background:var(--bg3);border:1px solid var(--border);color:var(--text);
+outline:none;transition:all .2s;font-family:inherit;-webkit-appearance:none}
+.fg input:focus,.fg select:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(0,56,147,.15)}
+.sim-r{background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:1.3rem;margin-bottom:.9rem;text-align:center}
+.sim-r-lbl{font-size:.66rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:.4rem}
+.sim-r-val{font-size:2rem;font-weight:800;letter-spacing:-.03em;color:#4ADE80}
+.sim-r-sub{font-size:.72rem;color:var(--muted);margin-top:.3rem}
+.sim-breakdown{display:flex;flex-direction:column;gap:.6rem}
+.sb-row{display:flex;justify-content:space-between;align-items:center;font-size:.82rem}
+.sb-row .lbl{color:var(--muted)}
+.sb-row .val{font-weight:700}
+
+@media(max-width:700px){.sim-body{grid-template-columns:1fr}.sim-inputs{border-right:none;border-bottom:1px solid var(--border)}}
+</style>
+</head>
+<body>
+<nav id="nav">
+  <a href="index.html" class="logo"><div class="logo-mark"><s></s><s></s><s></s><s></s></div>Malaysia<em>Web3</em></a>
+  <ul class="nav-links">
+    <li><a href="airdrop.html">Airdrops</a></li>
+    <li><a href="defi.html" class="active">DeFi</a></li>
+    <li><a href="nft.html">NFT</a></li>
+    <li><a href="bitcoin.html">Bitcoin</a></li>
+    <li><a href="altcoin.html">Altcoins</a></li>
+  </ul>
+  <div class="nav-r">
+    <button class="btn-ghost">Sign In</button>
+    <button class="btn-cta">Join Free 🇲🇾</button>
+  </div>
+  <button class="hamburger" onclick="document.getElementById('mob').classList.toggle('open')">☰</button>
+</nav>
+<div class="mob-nav" id="mob">
+  <a href="airdrop.html">🪂 Airdrops</a><a href="defi.html">⚡ DeFi</a>
+  <a href="nft.html">🎨 NFT</a><a href="bitcoin.html">₿ Bitcoin</a><a href="altcoin.html">🚀 Altcoins</a>
+  <div class="mob-btns"><button class="btn-ghost" style="width:100%">Sign In</button><button class="btn-cta" style="width:100%;padding:11px">Join Free 🇲🇾</button></div>
+</div>
+
+<div class="page-hero">
+  <div class="ph-orb ph-orb-1"></div><div class="ph-orb ph-orb-2"></div>
+  <div class="page-hero-inner">
+    <div class="page-hero-lbl">⚡ DeFi Hub</div>
+    <h1 class="page-hero-h1"><em style="color:var(--blue)">Decentralised</em><br>Finance — <span style="color:var(--gold)">earn without</span><br>a bank</h1>
+    <p class="page-hero-sub">DeFi lets you lend, borrow, trade, and earn yield on your crypto — without banks, KYC, or middlemen. Discover the best yield opportunities and learn how to navigate DeFi safely from Malaysia.</p>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:2rem">
+      <a href="#simulator" class="btn-primary">📊 Yield Simulator</a>
+      <a href="#platforms" class="btn-outline">Browse Platforms</a>
+    </div>
+  </div>
+</div>
+
+<!-- WHAT IS DEFI -->
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="sec-lbl">DeFi Fundamentals</div>
+      <h2 class="sec-h2">How <em>DeFi</em> works</h2>
+      <p class="sec-sub">Decentralised Finance replaces traditional financial intermediaries with smart contracts — self-executing code on blockchains that handle lending, trading, and yield generation automatically.</p>
+    </div>
+    <div class="concept-grid">
+      <div class="concept-card rv d1">
+        <div class="cc-num">01</div>
+        <div class="cc-title">Liquidity Pools & AMMs</div>
+        <div class="cc-desc">Instead of order books, AMMs (Automated Market Makers) use pools of two tokens. You deposit both sides to become a liquidity provider (LP) and earn trading fees. Risk: impermanent loss.</div>
+      </div>
+      <div class="concept-card rv d2">
+        <div class="cc-num">02</div>
+        <div class="cc-title">Lending & Borrowing</div>
+        <div class="cc-desc">Deposit assets to earn interest from borrowers. Borrow against your collateral. Protocols like Aave and Compound manage this automatically. Risk: liquidation if collateral drops.</div>
+      </div>
+      <div class="concept-card rv d3">
+        <div class="cc-num">03</div>
+        <div class="cc-title">Yield Farming</div>
+        <div class="cc-desc">Earn protocol tokens on top of base yields by staking LP tokens. Can produce very high APYs but involves compounding risks from token inflation and smart contract bugs.</div>
+      </div>
+      <div class="concept-card rv d1">
+        <div class="cc-num">04</div>
+        <div class="cc-title">Liquid Staking</div>
+        <div class="cc-desc">Stake ETH or SOL and receive a liquid receipt token (stETH, mSOL) you can still use in DeFi. Earn staking rewards without locking up your assets. Lowest risk DeFi strategy.</div>
+      </div>
+      <div class="concept-card rv d2">
+        <div class="cc-num">05</div>
+        <div class="cc-title">Perpetual DEXes</div>
+        <div class="cc-desc">Trade crypto with leverage on-chain. Liquidity providers earn funding fees. Highest risk — leveraged trading is dangerous. Start with spot before touching perps.</div>
+      </div>
+      <div class="concept-card rv d3">
+        <div class="cc-num">06</div>
+        <div class="cc-title">RWA & Stablecoin Yields</div>
+        <div class="cc-desc">Earn yield on stablecoins backed by real-world assets (T-bills, bonds). Protocols like Ondo Finance offer 4–6% APY in USD — the DeFi equivalent of a savings account.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- YIELD SIMULATOR -->
+<section class="sec sec-alt" id="simulator">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="sec-lbl">Yield Simulator</div>
+      <h2 class="sec-h2">Calculate your <span class="gold">DeFi returns</span></h2>
+    </div>
+    <div class="sim-wrap rv d1">
+      <div class="sim-header">
+        <h2>📊 DeFi Yield Calculator</h2>
+        <p>Estimate your earnings across different DeFi strategies. All values in USD / RM.</p>
+      </div>
+      <div class="sim-body">
+        <div class="sim-inputs">
+          <div class="fg">
+            <label>Strategy</label>
+            <select id="strategy" onchange="simCalc()">
+              <option value="lending">Lending (Aave / Compound)</option>
+              <option value="lp">LP / AMM (Uniswap / Camelot)</option>
+              <option value="staking">Liquid Staking (Lido / Rocket Pool)</option>
+              <option value="stablecoin">Stablecoin Vault (Curve / Convex)</option>
+              <option value="rwa">RWA Yield (Ondo / Mountain)</option>
+            </select>
+          </div>
+          <div class="fg">
+            <label>Principal Amount (USD $)</label>
+            <input type="number" id="principal" value="5000" oninput="simCalc()">
+          </div>
+          <div class="fg">
+            <label>APY (%)</label>
+            <input type="number" id="apy" value="8.5" step="0.1" oninput="simCalc()">
+          </div>
+          <div class="fg">
+            <label>Duration</label>
+            <select id="duration" onchange="simCalc()">
+              <option value="30">1 Month</option>
+              <option value="90">3 Months</option>
+              <option value="180">6 Months</option>
+              <option value="365" selected>1 Year</option>
+              <option value="730">2 Years</option>
+            </select>
+          </div>
+          <div class="fg">
+            <label>Compound Frequency</label>
+            <select id="compound" onchange="simCalc()">
+              <option value="1">Annually</option>
+              <option value="12">Monthly</option>
+              <option value="52" selected>Weekly</option>
+              <option value="365">Daily</option>
+            </select>
+          </div>
+          <div class="fg">
+            <label>MYR / USD Rate</label>
+            <input type="number" id="myrrate" value="4.70" step="0.01" oninput="simCalc()">
+          </div>
+        </div>
+        <div class="sim-result">
+          <div class="sim-r">
+            <div class="sim-r-lbl">💰 Total Return</div>
+            <div class="sim-r-val" id="s-total">$0</div>
+            <div class="sim-r-sub" id="s-total-rm">≈ RM 0</div>
+          </div>
+          <div class="sim-r" style="margin-bottom:1.3rem">
+            <div class="sim-r-lbl">📈 Final Portfolio Value</div>
+            <div class="sim-r-val" id="s-final" style="color:var(--gold)">$0</div>
+            <div class="sim-r-sub" id="s-final-rm">≈ RM 0</div>
+          </div>
+          <div class="sim-breakdown">
+            <div class="sb-row"><span class="lbl">Profit (USD)</span><span class="val" id="s-profit">—</span></div>
+            <div class="sb-row"><span class="lbl">Effective APY</span><span class="val" id="s-effapy">—</span></div>
+            <div class="sb-row"><span class="lbl">Daily Earnings</span><span class="val" id="s-daily">—</span></div>
+            <div class="sb-row"><span class="lbl">Monthly Earnings</span><span class="val" id="s-monthly">—</span></div>
+            <div class="sb-row"><span class="lbl">Risk Level</span><span class="val" id="s-risk">—</span></div>
+          </div>
+          <div style="margin-top:1.2rem;font-size:.7rem;color:var(--muted);line-height:1.55;
+          padding:.9rem;background:rgba(0,56,147,.06);border-radius:10px;border:1px solid rgba(0,56,147,.15)">
+            ⚠️ Estimates only. DeFi APYs fluctuate daily. Smart contract risk, impermanent loss, and liquidation risk are not factored in. DYOR before depositing.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PLATFORMS -->
+<section class="sec" id="platforms">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="sec-lbl">DeFi Platforms</div>
+      <h2 class="sec-h2">Top <em>yield</em> opportunities</h2>
+      <p class="sec-sub">Curated list of DeFi protocols for earning yield — spanning lending, liquidity, staking, and stablecoins. Always verify contract addresses independently.</p>
+    </div>
+
+    <div class="proto-group rv d1">
+      <div class="proto-group-title">🏦 Lending & Borrowing</div>
+      <div class="lnk-grid">
+        <a href="https://app.aave.com" target="_blank" class="lnk-card">
+          <div class="lnk-icon">👻</div>
+          <div><div class="lnk-name">Aave</div><div class="lnk-desc">Leading lending protocol. Deposit ETH, USDC, wBTC to earn interest. Multi-chain. TVL $15B+.</div><span class="tag tag-gr" style="margin-top:.5rem">Low Risk</span></div>
+          <div class="lnk-arrow">↗</div>
+        </a>
+        <a href="https://app.compound.finance" target="_blank" class="lnk-card">
+          <div class="lnk-icon">🔵</div>
+          <div><div class="lnk-name">Compound</div><div class="lnk-desc">Pioneer lending protocol on Ethereum. Earn COMP governance tokens on top of interest.</div><span class="tag tag-gr" style="margin-top:.5rem">Low Risk</span></div>
+          <div class="lnk-arrow">↗</div>
+        </a>
+        <a href="https://morpho.org" target="_blank" class="lnk-card">
+          <div class="lnk-icon">🦋</div>
+          <div><div class="lnk-name">Morpho</div><div class="lnk-desc">Peer-to-peer lending built on top of Aave/Compound. Optimises rates for both sides.</div><span class="tag tag-b" style="margin-top:.5rem">Medium Risk</span></div>
+          <div class="lnk-arrow">↗</div>
+        </a>
+      </div>
+    </div>
+
+    <div class="proto-group rv d2">
+      <div class="proto-group-title">💧 Liquidity & AMMs</div>
+      <div class="lnk-grid">
+        <a href="https://app.uniswap.org" target="_blank" class="lnk-card">
+          <div class="lnk-icon">🦄</div>
+          <div><div class="lnk-name">Uniswap v4</div><div class="lnk-desc">World's largest DEX. Provide liquidity to any token pair and earn 0.05–1% of all trades.</div><span class="tag tag-b" style="margin-top:.5rem">Medium Risk</span></div>
+          <div class="lnk-arrow">↗</div>
+        </a>
+        <a href="https://curve.fi" target="_blank" class="lnk-card">
+          <div class="lnk-icon">🌊</div>
+          <div><div class="lnk-name">Curve Finance</div><div class="lnk-desc">Optimised for stablecoin swaps. Deep liquidity, low slippage, CRV rewards. Best for stablecoin LPs.</div><span class="tag tag-gr" style="margin-top:.5rem">Low–Med Risk</span></div>
+          <div class="lnk-arrow">↗</div>
+        </a>
+        <a href="https://balancer.fi" target="_blank" class="lnk-card">
+          <div class="lnk-icon">⚖️</div>
+          <div><div class="lnk-name">Balancer</div><div class="lnk-desc">Flexible multi-token pools (up to 8 assets). Custom weightings, protocol fees, and BAL emissions.</div><span class="tag tag-b" style="margin-top:.5rem">Medium Risk</span></div>
+          <div class="lnk-arrow">↗</div>
+        </a>
+      </div>
+    </div>
+
+    <div class="proto-group rv d3">
+      <div class="proto-group-title">🔒 Liquid Staking</div>
+      <div class="lnk-grid">
+        <a href="https://stake.lido.fi" target="_blank" class="lnk-card">
+          <div class="lnk-icon">🧪</div>
+          <div><div class="lnk-name">Lido Finance</div><div class="lnk-desc">Stake ETH, receive stETH. Earn ~3.5–4.5% APY. stETH usable across all DeFi protocols.</div><span class="tag tag-gr" style="margin-top:.5rem">Low Risk</span></div>
+          <div class="lnk-arrow">↗</div>
+        </a>
+        <a href="https://rocketpool.net" target="_blank" class="lnk-card">
+          <div class="lnk-icon">🚀</div>
+          <div><div class="lnk-name">Rocket Pool</div><div class="lnk-desc">Decentralised ETH staking. Receive rETH. More decentralised than Lido, slightly lower APY.</div><span class="tag tag-gr" style="margin-top:.5rem">Low Risk</span></div>
+          <div class="lnk-arrow">↗</div>
+        </a>
+        <a href="https://marinade.finance" target="_blank" class="lnk-card">
+          <div class="lnk-icon">🥩</div>
+          <div><div class="lnk-name">Marinade Finance</div><div class="lnk-desc">Liquid staking on Solana. Stake SOL, receive mSOL. ~7% APY. Use mSOL across Solana DeFi.</div><span class="tag tag-gr" style="margin-top:.5rem">Low Risk</span></div>
+          <div class="lnk-arrow">↗</div>
+        </a>
+      </div>
+    </div>
+
+    <div class="proto-group rv d1">
+      <div class="proto-group-title">💵 Stablecoin & RWA Yield</div>
+      <div class="lnk-grid">
+        <a href="https://ondo.finance" target="_blank" class="lnk-card">
+          <div class="lnk-icon">🏛️</div>
+          <div><div class="lnk-name">Ondo Finance</div><div class="lnk-desc">T-bill backed stablecoin yield. ~4.5–5.2% APY in USD. Lowest risk in DeFi. Qualified investors only.</div><span class="tag tag-gr" style="margin-top:.5rem">Lowest Risk</span></div>
+          <div class="lnk-arrow">↗</div>
+        </a>
+        <a href="https://www.pendle.finance" target="_blank" class="lnk-card">
+          <div class="lnk-icon">🕯️</div>
+          <div><div class="lnk-name">Pendle Finance</div><div class="lnk-desc">Trade future yield. Lock in fixed APY or speculate on yield rates. Built on Ethereum and Arbitrum.</div><span class="tag tag-b" style="margin-top:.5rem">Medium Risk</span></div>
+          <div class="lnk-arrow">↗</div>
+        </a>
+        <a href="https://convexfinance.com" target="_blank" class="lnk-card">
+          <div class="lnk-icon">⚡</div>
+          <div><div class="lnk-name">Convex Finance</div><div class="lnk-desc">Boost Curve LP rewards without locking CRV. Highest stablecoin yields available. CRV + CVX rewards.</div><span class="tag tag-b" style="margin-top:.5rem">Medium Risk</span></div>
+          <div class="lnk-arrow">↗</div>
+        </a>
+      </div>
+    </div>
+
+    <div class="proto-group rv d2">
+      <div class="proto-group-title">📈 Perp DEXes & Advanced</div>
+      <div class="lnk-grid">
+        <a href="https://app.hyperliquid.xyz" target="_blank" class="lnk-card">
+          <div class="lnk-icon">💧</div>
+          <div><div class="lnk-name">Hyperliquid</div><div class="lnk-desc">Top on-chain perp DEX. Provide HLP vault liquidity and earn funding fees. $4B+ daily volume.</div><span class="tag tag-r" style="margin-top:.5rem">High Risk</span></div>
+          <div class="lnk-arrow">↗</div>
+        </a>
+        <a href="https://app.gmx.io" target="_blank" class="lnk-card">
+          <div class="lnk-icon">🔵</div>
+          <div><div class="lnk-name">GMX</div><div class="lnk-desc">Perp DEX on Arbitrum & Avalanche. Buy GLP/GM to earn 70% of protocol fees in ETH/AVAX.</div><span class="tag tag-r" style="margin-top:.5rem">High Risk</span></div>
+          <div class="lnk-arrow">↗</div>
+        </a>
+        <a href="https://drift.trade" target="_blank" class="lnk-card">
+          <div class="lnk-icon">🌊</div>
+          <div><div class="lnk-name">Drift Protocol</div><div class="lnk-desc">Solana's leading perp DEX. Earn yield by providing liquidity to the JIT liquidity pool.</div><span class="tag tag-r" style="margin-top:.5rem">High Risk</span></div>
+          <div class="lnk-arrow">↗</div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="foot">
+  <a href="index.html" class="foot-logo"><div class="logo-mark"><s></s><s></s><s></s><s></s></div>Malaysia<em style="font-style:normal;color:var(--gold)">Web3</em></a>
+  <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+    <div class="flag-dots"><div class="fd" style="background:#CC0001"></div><div class="fd" style="background:#fff;border:1px solid #333"></div><div class="fd" style="background:#003893"></div><div class="fd" style="background:#FFCC00"></div></div>
+    <span>Made with ❤️ in Malaysia 🇲🇾</span>
+    <a href="#">Privacy</a> · <a href="#">Terms</a>
+  </div>
+</footer>
+
+<script>
+window.addEventListener('scroll',()=>{document.getElementById('nav').style.background=window.scrollY>60?'rgba(6,8,15,.96)':'rgba(6,8,15,.8)'});
+const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');obs.unobserve(e.target)}})},{threshold:.1});
+document.querySelectorAll('.rv').forEach(e=>obs.observe(e));
+
+const risks={lending:'🟡 Medium',lp:'🟠 Med-High',staking:'🟢 Low',stablecoin:'🟡 Medium',rwa:'🟢 Lowest'};
+const apyDefaults={lending:8.5,lp:15,staking:4.2,stablecoin:12,rwa:5};
+
+function simCalc(){
+  const P=parseFloat(document.getElementById('principal').value)||0;
+  const apy=parseFloat(document.getElementById('apy').value)||0;
+  const days=parseInt(document.getElementById('duration').value)||365;
+  const n=parseInt(document.getElementById('compound').value)||52;
+  const rate=parseFloat(document.getElementById('myrrate').value)||4.7;
+  const strat=document.getElementById('strategy').value;
+
+  const r=apy/100;
+  const t=days/365;
+  const final=P*Math.pow(1+r/n,n*t);
+  const profit=final-P;
+  const effApy=(Math.pow(final/P,1/t)-1)*100;
+  const daily=profit/(days);
+  const monthly=profit/(days/30);
+
+  document.getElementById('s-total').textContent='$'+fmt2(profit);
+  document.getElementById('s-total-rm').textContent='≈ RM '+fmt2(profit*rate);
+  document.getElementById('s-final').textContent='$'+fmt2(final);
+  document.getElementById('s-final-rm').textContent='≈ RM '+fmt2(final*rate);
+  document.getElementById('s-profit').textContent='$'+fmt2(profit)+' (RM '+fmt2(profit*rate)+')';
+  document.getElementById('s-effapy').textContent=effApy.toFixed(2)+'%';
+  document.getElementById('s-daily').textContent='$'+daily.toFixed(2)+' / day';
+  document.getElementById('s-monthly').textContent='$'+monthly.toFixed(2)+' / month';
+  document.getElementById('s-risk').textContent=risks[strat]||'—';
+}
+
+document.getElementById('strategy').addEventListener('change',function(){
+  document.getElementById('apy').value=apyDefaults[this.value]||8;simCalc();
+});
+
+function fmt2(n){if(n>=1e6)return (n/1e6).toFixed(2)+'M';if(n>=1e3)return (n/1e3).toFixed(2)+'K';return n.toFixed(2)}
+simCalc();
+</script>
+</body>
+</html>

@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Airdrop Hub — Malaysia Web3</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+/* ── PAGE-SPECIFIC ── */
+.ph-orb-1{width:600px;height:600px;background:radial-gradient(circle,rgba(255,204,0,.16) 0%,transparent 65%);top:-200px;left:-150px}
+.ph-orb-2{width:500px;height:500px;background:radial-gradient(circle,rgba(204,0,1,.12) 0%,transparent 65%);top:50px;right:-100px}
+
+/* INFO CARDS */
+.info-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem;margin-top:2rem}
+.info-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.6rem;transition:all .3s}
+.info-card:hover{border-color:var(--border2);transform:translateY(-2px)}
+.info-card .ico{font-size:1.8rem;margin-bottom:1rem}
+.info-card h3{font-size:1rem;font-weight:700;margin-bottom:.4rem}
+.info-card p{font-size:.83rem;color:var(--muted);line-height:1.65}
+
+/* STEP FLOW */
+.steps{display:flex;gap:0;flex-wrap:wrap;margin-top:2rem;counter-reset:step}
+.step{flex:1;min-width:200px;padding:1.8rem;border:1px solid var(--border);background:var(--card);
+position:relative;transition:all .3s}
+.step:first-child{border-radius:16px 0 0 16px}
+.step:last-child{border-radius:0 16px 16px 0}
+.step:not(:last-child){border-right:none}
+.step:hover{background:var(--card2);z-index:1}
+.step::before{counter-increment:step;content:counter(step,'0');
+font-size:2.5rem;font-weight:800;letter-spacing:-.04em;line-height:1;display:block;
+background:linear-gradient(135deg,var(--gold),#FF9500);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:.8rem}
+.step h3{font-size:.95rem;font-weight:700;margin-bottom:.4rem}
+.step p{font-size:.8rem;color:var(--muted);line-height:1.6}
+
+/* CALCULATOR */
+.calc-wrap{background:var(--card);border:1px solid var(--border);border-radius:22px;overflow:hidden;max-width:900px;margin:0 auto}
+.calc-header{background:linear-gradient(135deg,rgba(255,204,0,.08),rgba(204,0,1,.06));
+border-bottom:1px solid var(--border);padding:1.8rem 2rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
+.calc-header h2{font-size:1.3rem;font-weight:800;letter-spacing:-.02em}
+.calc-header p{font-size:.82rem;color:var(--muted);margin-top:.2rem}
+.calc-tabs{display:flex;background:var(--bg3);border-radius:10px;padding:4px;gap:3px;flex-wrap:wrap}
+.ctab{padding:7px 14px;border-radius:8px;font-size:.78rem;font-weight:700;background:none;
+color:var(--muted);transition:all .2s;white-space:nowrap}
+.ctab.on{background:var(--card2);color:var(--text)}
+.calc-body{display:grid;grid-template-columns:1fr 1fr;gap:0}
+.calc-inputs{padding:2rem;border-right:1px solid var(--border)}
+.calc-result{padding:2rem;background:rgba(255,204,0,.025)}
+.fg{margin-bottom:1.3rem}
+.fg label{display:block;font-size:.73rem;font-weight:700;color:var(--muted);
+text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px}
+.fg input{width:100%;padding:11px 14px;border-radius:11px;font-size:.92rem;
+background:var(--bg3);border:1px solid var(--border);color:var(--text);
+outline:none;transition:all .2s;font-family:inherit}
+.fg input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(255,204,0,.1)}
+.fg .helper{font-size:.69rem;color:var(--muted);margin-top:4px}
+.calc-preset{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:.5rem}
+.preset-btn{padding:4px 10px;border-radius:100px;font-size:.68rem;font-weight:700;
+background:var(--bg3);border:1px solid var(--border);color:var(--muted);transition:all .2s}
+.preset-btn:hover,.preset-btn.on{background:rgba(255,204,0,.12);border-color:rgba(255,204,0,.3);color:var(--gold)}
+.result-box{background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:1.5rem;margin-bottom:1rem;text-align:center}
+.result-label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:.5rem}
+.result-value{font-size:2.4rem;font-weight:800;letter-spacing:-.04em;
+background:linear-gradient(135deg,var(--gold),#FF9500);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1}
+.result-sub{font-size:.75rem;color:var(--muted);margin-top:.4rem}
+.result-grid{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin-bottom:1rem}
+.rg-item{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:.9rem;text-align:center}
+.rg-label{font-size:.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.3rem}
+.rg-val{font-size:.95rem;font-weight:700}
+.calc-note{font-size:.72rem;color:var(--muted);line-height:1.55;padding:1rem;
+background:rgba(255,204,0,.04);border:1px solid rgba(255,204,0,.12);border-radius:10px;margin-top:1rem}
+.calc-note strong{color:var(--gold)}
+
+/* PROJECT TABLE */
+.proj-table{width:100%;border-collapse:collapse;font-size:.84rem}
+.proj-table th{padding:.9rem 1rem;text-align:left;font-size:.68rem;font-weight:700;
+text-transform:uppercase;letter-spacing:.08em;color:var(--muted);
+border-bottom:1px solid var(--border);white-space:nowrap}
+.proj-table td{padding:.9rem 1rem;border-bottom:1px solid var(--border);vertical-align:middle}
+.proj-table tr:last-child td{border-bottom:none}
+.proj-table tr:hover td{background:rgba(255,255,255,.02)}
+.proj-name{font-weight:700;display:flex;align-items:center;gap:8px}
+.proj-ico{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.8rem;flex-shrink:0;background:var(--bg3)}
+.status-live{color:#4ADE80;font-weight:700;font-size:.78rem}
+.status-soon{color:var(--gold);font-weight:700;font-size:.78rem}
+.status-ended{color:var(--muted);font-size:.78rem}
+.tbl-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:16px}
+
+/* TIP BOX */
+.tip-box{display:flex;gap:1rem;background:rgba(0,56,147,.08);border:1px solid rgba(0,56,147,.2);
+border-radius:14px;padding:1.2rem 1.5rem}
+.tip-box .ico{font-size:1.4rem;flex-shrink:0;margin-top:2px}
+.tip-box p{font-size:.83rem;color:var(--muted);line-height:1.65}
+.tip-box strong{color:var(--text)}
+
+/* RISK METER */
+.risk-row{display:flex;align-items:center;gap:1rem;margin-bottom:.7rem}
+.risk-label{font-size:.8rem;font-weight:600;min-width:80px}
+.risk-bar{flex:1;height:6px;background:var(--bg3);border-radius:3px;overflow:hidden}
+.risk-fill{height:100%;border-radius:3px;transition:width .8s ease}
+.risk-lvl{font-size:.72rem;color:var(--muted);min-width:50px;text-align:right}
+
+@media(max-width:700px){
+  .calc-body{grid-template-columns:1fr}
+  .calc-inputs{border-right:none;border-bottom:1px solid var(--border)}
+  .steps .step:first-child{border-radius:16px 16px 0 0}
+  .steps .step:last-child{border-radius:0 0 16px 16px}
+  .steps .step:not(:last-child){border-right:1px solid var(--border);border-bottom:none}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="index.html" class="logo"><div class="logo-mark"><s></s><s></s><s></s><s></s></div>Malaysia<em>Web3</em></a>
+  <ul class="nav-links">
+    <li><a href="airdrop.html" class="active">Airdrops</a></li>
+    <li><a href="defi.html">DeFi</a></li>
+    <li><a href="nft.html">NFT</a></li>
+    <li><a href="bitcoin.html">Bitcoin</a></li>
+    <li><a href="altcoin.html">Altcoins</a></li>
+  </ul>
+  <div class="nav-r">
+    <button class="btn-ghost">Sign In</button>
+    <button class="btn-cta">Join Free 🇲🇾</button>
+  </div>
+  <button class="hamburger" onclick="document.getElementById('mob').classList.toggle('open')">☰</button>
+</nav>
+<div class="mob-nav" id="mob">
+  <a href="airdrop.html">🪂 Airdrops</a><a href="defi.html">⚡ DeFi</a>
+  <a href="nft.html">🎨 NFT</a><a href="bitcoin.html">₿ Bitcoin</a><a href="altcoin.html">🚀 Altcoins</a>
+  <div class="mob-btns">
+    <button class="btn-ghost" style="width:100%">Sign In</button>
+    <button class="btn-cta" style="width:100%;padding:11px">Join Free 🇲🇾</button>
+  </div>
+</div>
+
+<!-- PAGE HERO -->
+<div class="page-hero">
+  <div class="ph-orb ph-orb-1"></div>
+  <div class="ph-orb ph-orb-2"></div>
+  <div class="page-hero-inner">
+    <div class="page-hero-lbl">🪂 Airdrop Hub</div>
+    <h1 class="page-hero-h1" style="color:var(--gold)">Catch every<br><em style="color:var(--red)">free token</em> drop</h1>
+    <p class="page-hero-sub">Airdrops distribute free tokens to early adopters, testers, and community contributors. Learn how to find, qualify for, and calculate the value of airdrops — then never miss one again.</p>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:2rem">
+      <a href="#calculator" class="btn-primary">🧮 Open Calculator</a>
+      <a href="#active" class="btn-outline">View Active Airdrops</a>
+    </div>
+  </div>
+</div>
+
+<!-- WHAT IS AN AIRDROP -->
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="sec-lbl">What is an Airdrop?</div>
+      <h2 class="sec-h2">Free tokens — but <em>not</em> free money</h2>
+      <p class="sec-sub">An airdrop is when a blockchain project distributes tokens directly to wallet addresses — usually to reward early users, bootstrap a community, or decentralise ownership. Understanding them is the first step to profiting from them.</p>
+    </div>
+    <div class="info-grid">
+      <div class="info-card rv d1">
+        <div class="ico">🎁</div>
+        <h3>Retroactive Airdrops</h3>
+        <p>Rewards for past usage. If you used a protocol before it had a token, you may qualify. Examples: Uniswap, dYdX, Arbitrum.</p>
+      </div>
+      <div class="info-card rv d2">
+        <div class="ico">🏗️</div>
+        <h3>Task-Based Airdrops</h3>
+        <p>Complete specific actions — bridge assets, provide liquidity, trade volume, or hold an NFT — to accumulate "points" that convert to tokens at TGE.</p>
+      </div>
+      <div class="info-card rv d3">
+        <div class="ico">🗳️</div>
+        <h3>Governance Airdrops</h3>
+        <p>Distributed to give community members voting power in DAOs. Holding the token lets you vote on protocol upgrades, treasury usage, and more.</p>
+      </div>
+      <div class="info-card rv d1">
+        <div class="ico">🔒</div>
+        <h3>Staking & LP Rewards</h3>
+        <p>Stake tokens or provide liquidity to earn ongoing emissions. These are the most predictable form — you earn as long as you participate.</p>
+      </div>
+      <div class="info-card rv d2">
+        <div class="ico">⚠️</div>
+        <h3>Airdrop Risks</h3>
+        <p>Scam airdrops steal wallet approvals. Never connect your main wallet to unknown sites. Always verify contract addresses via official channels.</p>
+        <span class="tag tag-r" style="margin-top:.8rem">High Risk Area</span>
+      </div>
+      <div class="info-card rv d3">
+        <div class="ico">🇲🇾</div>
+        <h3>Tax in Malaysia</h3>
+        <p>Lembaga Hasil Dalam Negeri (LHDN) may treat airdrop income as taxable gains. Consult a tax professional before claiming large airdrops.</p>
+        <span class="tag tag-g" style="margin-top:.8rem">Know Your Obligations</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW TO FARM -->
+<section class="sec sec-alt">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="sec-lbl">How to Farm Airdrops</div>
+      <h2 class="sec-h2">5 steps to <em>systematic</em> airdrop farming</h2>
+    </div>
+    <div class="steps rv d1">
+      <div class="step"><h3>Find & Research</h3><p>Identify projects pre-token with active communities. Check Twitter, Telegram, DeFiLlama, and this page.</p></div>
+      <div class="step"><h3>Set Up Wallets</h3><p>Use a dedicated farming wallet. Never use your main holdings wallet. Hardware wallet for storage.</p></div>
+      <div class="step"><h3>Earn Points</h3><p>Trade, bridge, provide liquidity, or hold NFTs as specified by the project's point system.</p></div>
+      <div class="step"><h3>Track & Calculate</h3><p>Use our calculator below to estimate potential value based on FDV assumptions and your point rank.</p></div>
+      <div class="step"><h3>Claim & Manage</h3><p>At TGE, claim via official site only. Decide: hold, sell, or provide liquidity. Track cost basis for tax.</p></div>
+    </div>
+    <div class="tip-box rv" style="margin-top:2rem">
+      <div class="ico">💡</div>
+      <p><strong>Pro tip:</strong> Focus on quality over quantity. Farming 3–5 high-conviction projects deeply outperforms spreading thin across 20+ protocols. Consistent volume, diverse assets bridged, and early participation matter most for retroactive qualifying.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CALCULATOR -->
+<section class="sec" id="calculator">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="sec-lbl">Airdrop Calculator</div>
+      <h2 class="sec-h2">Estimate your <span class="gold">potential value</span></h2>
+      <p class="sec-sub">Enter your points, the project's FDV assumption, total point supply, and airdrop allocation to calculate your estimated token value. Inspired by Branxi.app methodology.</p>
+    </div>
+    <div class="calc-wrap rv d1">
+      <div class="calc-header">
+        <div>
+          <h2>🧮 Airdrop Calculator</h2>
+          <p>Adjust presets or enter custom values. Results are estimates only.</p>
+        </div>
+        <div class="calc-tabs" id="calcTabs">
+          <button class="ctab on" onclick="setProject(this,'Hyperliquid',12,1000000000,3.1)">Hyperliquid</button>
+          <button class="ctab" onclick="setProject(this,'Nado',2,500000000,5)">Nado</button>
+          <button class="ctab" onclick="setProject(this,'Paradex',1.5,800000000,4)">Paradex</button>
+          <button class="ctab" onclick="setProject(this,'Extended',3,600000000,6)">Extended</button>
+          <button class="ctab" onclick="setProject(this,'Custom',0,0,0)">Custom</button>
+        </div>
+      </div>
+      <div class="calc-body">
+        <div class="calc-inputs">
+          <div class="fg">
+            <label>My Points Balance</label>
+            <input type="number" id="myPoints" value="150000" oninput="calc()" placeholder="e.g. 150000">
+            <div class="helper">Your total accumulated points on the protocol</div>
+          </div>
+          <div class="fg">
+            <label>Total Points in System</label>
+            <div class="calc-preset">
+              <button class="preset-btn" onclick="setPreset('totalPoints',500000000,this)">500M</button>
+              <button class="preset-btn on" onclick="setPreset('totalPoints',1000000000,this)">1B</button>
+              <button class="preset-btn" onclick="setPreset('totalPoints',5000000000,this)">5B</button>
+              <button class="preset-btn" onclick="setPreset('totalPoints',10000000000,this)">10B</button>
+            </div>
+            <input type="number" id="totalPoints" value="1000000000" oninput="calc()" placeholder="Total points issued">
+            <div class="helper">Community estimate of all points distributed</div>
+          </div>
+          <div class="fg">
+            <label>Project FDV (Fully Diluted Value) $</label>
+            <div class="calc-preset">
+              <button class="preset-btn" onclick="setPreset('fdv',500000000,this)">$500M</button>
+              <button class="preset-btn" onclick="setPreset('fdv',1000000000,this)">$1B</button>
+              <button class="preset-btn on" onclick="setPreset('fdv',2000000000,this)">$2B</button>
+              <button class="preset-btn" onclick="setPreset('fdv',5000000000,this)">$5B</button>
+              <button class="preset-btn" onclick="setPreset('fdv',12000000000,this)">$12B</button>
+            </div>
+            <input type="number" id="fdv" value="2000000000" oninput="calc()" placeholder="e.g. 2000000000">
+            <div class="helper">Your estimate of the project's fully diluted valuation at launch</div>
+          </div>
+          <div class="fg">
+            <label>Airdrop % of Total Supply</label>
+            <div class="calc-preset">
+              <button class="preset-btn" onclick="setPreset('pct',3,this)">3%</button>
+              <button class="preset-btn on" onclick="setPreset('pct',5,this)">5%</button>
+              <button class="preset-btn" onclick="setPreset('pct',8,this)">8%</button>
+              <button class="preset-btn" onclick="setPreset('pct',12,this)">12%</button>
+              <button class="preset-btn" onclick="setPreset('pct',15,this)">15%</button>
+            </div>
+            <input type="number" id="pct" value="5" oninput="calc()" placeholder="e.g. 5" min="0" max="100">
+            <div class="helper">% of total token supply allocated to the community airdrop</div>
+          </div>
+          <div class="fg">
+            <label>MYR / USD Exchange Rate</label>
+            <input type="number" id="usdmyr" value="4.70" oninput="calc()" step="0.01">
+            <div class="helper">Used to show estimated value in Ringgit Malaysia</div>
+          </div>
+        </div>
+        <div class="calc-result">
+          <div class="result-box">
+            <div class="result-label">💰 Estimated Airdrop Value</div>
+            <div class="result-value" id="r-usd">$0</div>
+            <div class="result-sub" id="r-myr">≈ RM 0</div>
+          </div>
+          <div class="result-grid">
+            <div class="rg-item">
+              <div class="rg-label">Airdrop Pool $</div>
+              <div class="rg-val" id="r-pool">—</div>
+            </div>
+            <div class="rg-item">
+              <div class="rg-label">My Share %</div>
+              <div class="rg-val" id="r-share">—</div>
+            </div>
+            <div class="rg-item">
+              <div class="rg-label">$ per 1K Points</div>
+              <div class="rg-val" id="r-ppp">—</div>
+            </div>
+            <div class="rg-item">
+              <div class="rg-label">Points Rank Est.</div>
+              <div class="rg-val" id="r-rank">—</div>
+            </div>
+          </div>
+
+          <!-- Risk Meter -->
+          <div style="margin-top:1rem">
+            <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:.8rem">Return Confidence</div>
+            <div class="risk-row"><div class="risk-label" style="font-size:.76rem">FDV Risk</div>
+              <div class="risk-bar"><div class="risk-fill" id="fdv-risk" style="width:50%;background:#F59E0B"></div></div>
+              <div class="risk-lvl" id="fdv-risk-lbl">Medium</div></div>
+            <div class="risk-row"><div class="risk-label" style="font-size:.76rem">Dilution Risk</div>
+              <div class="risk-bar"><div class="risk-fill" id="dil-risk" style="width:30%;background:#4ADE80"></div></div>
+              <div class="risk-lvl" id="dil-risk-lbl">Low</div></div>
+            <div class="risk-row"><div class="risk-label" style="font-size:.76rem">Unlock Risk</div>
+              <div class="risk-bar"><div class="risk-fill" style="width:40%;background:#F59E0B"></div></div>
+              <div class="risk-lvl">Medium</div></div>
+          </div>
+
+          <div class="calc-note">
+            <strong>⚠️ Disclaimer:</strong> These are community estimates only. Actual airdrop values depend on token price at TGE, vesting schedules, and final allocation decisions by the team. <strong>Never invest more than you can afford to lose.</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ACTIVE AIRDROPS TABLE -->
+<section class="sec sec-alt" id="active">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="sec-lbl">Active Airdrops</div>
+      <h2 class="sec-h2">Currently farmable <em>opportunities</em></h2>
+      <p class="sec-sub">Updated regularly. Status and values are community estimates — always DYOR.</p>
+    </div>
+    <div class="tbl-wrap rv d1">
+      <table class="proj-table">
+        <thead>
+          <tr>
+            <th>Project</th><th>Chain</th><th>Type</th><th>Est. FDV</th>
+            <th>Difficulty</th><th>Status</th><th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><div class="proj-name"><div class="proj-ico">💧</div>Nado</div></td>
+            <td><span class="tag tag-b">Ethereum</span></td>
+            <td>Perp DEX</td><td>$500M–2B</td>
+            <td>⭐⭐⭐</td><td><span class="status-live">● Live</span></td>
+            <td><a href="#" style="color:var(--gold);font-size:.8rem;font-weight:700">Farm →</a></td>
+          </tr>
+          <tr>
+            <td><div class="proj-name"><div class="proj-ico">🌀</div>Paradex</div></td>
+            <td><span class="tag tag-b">StarkNet</span></td>
+            <td>Perp DEX</td><td>$1B–3B</td>
+            <td>⭐⭐</td><td><span class="status-live">● Live</span></td>
+            <td><a href="#" style="color:var(--gold);font-size:.8rem;font-weight:700">Farm →</a></td>
+          </tr>
+          <tr>
+            <td><div class="proj-name"><div class="proj-ico">⚡</div>Extended</div></td>
+            <td><span class="tag tag-pu">Arbitrum</span></td>
+            <td>Perp DEX</td><td>$300M–1B</td>
+            <td>⭐⭐⭐⭐</td><td><span class="status-live">● Live</span></td>
+            <td><a href="#" style="color:var(--gold);font-size:.8rem;font-weight:700">Farm →</a></td>
+          </tr>
+          <tr>
+            <td><div class="proj-name"><div class="proj-ico">🏔️</div>Scroll</div></td>
+            <td><span class="tag tag-b">L2</span></td>
+            <td>Bridge & L2</td><td>$500M–1.5B</td>
+            <td>⭐⭐</td><td><span class="status-soon">⏳ Upcoming</span></td>
+            <td><a href="#" style="color:var(--gold);font-size:.8rem;font-weight:700">Prepare →</a></td>
+          </tr>
+          <tr>
+            <td><div class="proj-name"><div class="proj-ico">🔷</div>Linea</div></td>
+            <td><span class="tag tag-b">L2</span></td>
+            <td>L2 Ecosystem</td><td>$1B–5B</td>
+            <td>⭐⭐⭐</td><td><span class="status-soon">⏳ Upcoming</span></td>
+            <td><a href="#" style="color:var(--gold);font-size:.8rem;font-weight:700">Prepare →</a></td>
+          </tr>
+          <tr>
+            <td><div class="proj-name"><div class="proj-ico">🟢</div>ZKsync</div></td>
+            <td><span class="tag tag-b">ZK L2</span></td>
+            <td>L2 Ecosystem</td><td>$2B–8B</td>
+            <td>⭐⭐</td><td><span class="status-ended">✓ Ended S2</span></td>
+            <td><a href="#" style="color:var(--muted);font-size:.8rem">View →</a></td>
+          </tr>
+          <tr>
+            <td><div class="proj-name"><div class="proj-ico">🌊</div>Pacifica</div></td>
+            <td><span class="tag tag-or">Optimism</span></td>
+            <td>Perp DEX</td><td>$200M–800M</td>
+            <td>⭐⭐⭐</td><td><span class="status-live">● Live</span></td>
+            <td><a href="#" style="color:var(--gold);font-size:.8rem;font-weight:700">Farm →</a></td>
+          </tr>
+          <tr>
+            <td><div class="proj-name"><div class="proj-ico">🔥</div>Ethereal</div></td>
+            <td><span class="tag tag-b">Ethereum</span></td>
+            <td>Options DEX</td><td>$500M–2B</td>
+            <td>⭐⭐⭐⭐</td><td><span class="status-live">● Live</span></td>
+            <td><a href="#" style="color:var(--gold);font-size:.8rem;font-weight:700">Farm →</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="tip-box rv" style="margin-top:1.5rem">
+      <div class="ico">🛡️</div>
+      <p><strong>Security reminder for Malaysians:</strong> Airdrop scams are rampant. Always verify the official contract address from the project's official Twitter/X or Discord. Never enter your seed phrase. Use a separate farming wallet. Report scams to <strong>SKIM Malaysia (1-800-886-688)</strong>.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TOOLS -->
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="sec-lbl">Airdrop Tools</div>
+      <h2 class="sec-h2">Track, manage &amp; <em>maximise</em></h2>
+    </div>
+    <div class="grid-3">
+      <a href="https://branxi.app" target="_blank" class="lnk-card rv d1">
+        <div class="lnk-icon">📊</div>
+        <div><div class="lnk-name">Branxi.app</div><div class="lnk-desc">Perp DEX airdrop calculator &amp; point tracker. Community-built, used by 10K+ farmers.</div></div>
+        <div class="lnk-arrow">↗</div>
+      </a>
+      <a href="https://defilama.com/airdrops" target="_blank" class="lnk-card rv d2">
+        <div class="lnk-icon">🦙</div>
+        <div><div class="lnk-name">DeFiLlama Airdrops</div><div class="lnk-desc">Comprehensive database of past, active, and upcoming airdrops across all chains.</div></div>
+        <div class="lnk-arrow">↗</div>
+      </a>
+      <a href="https://earnifi.com" target="_blank" class="lnk-card rv d3">
+        <div class="lnk-icon">💎</div>
+        <div><div class="lnk-name">Earnifi</div><div class="lnk-desc">Check if your wallet address is eligible for unclaimed airdrops. Free to use.</div></div>
+        <div class="lnk-arrow">↗</div>
+      </a>
+      <a href="https://app.zerion.io" target="_blank" class="lnk-card rv d1">
+        <div class="lnk-icon">🔵</div>
+        <div><div class="lnk-name">Zerion</div><div class="lnk-desc">Portfolio tracker that shows airdrop eligibility and new token claims across all wallets.</div></div>
+        <div class="lnk-arrow">↗</div>
+      </a>
+      <a href="https://rainbow.me" target="_blank" class="lnk-card rv d2">
+        <div class="lnk-icon">🌈</div>
+        <div><div class="lnk-name">Rainbow Wallet</div><div class="lnk-desc">Mobile wallet with built-in airdrop notifications and portfolio tracking.</div></div>
+        <div class="lnk-arrow">↗</div>
+      </a>
+      <a href="https://loris.tools" target="_blank" class="lnk-card rv d3">
+        <div class="lnk-icon">🔬</div>
+        <div><div class="lnk-name">Loris Tools</div><div class="lnk-desc">Funding rate data and DEX analytics — essential for delta-neutral airdrop farming.</div></div>
+        <div class="lnk-arrow">↗</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="foot">
+  <a href="index.html" class="foot-logo">
+    <div class="logo-mark"><s></s><s></s><s></s><s></s></div>
+    Malaysia<em style="font-style:normal;color:var(--gold)">Web3</em>
+  </a>
+  <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+    <div class="flag-dots">
+      <div class="fd" style="background:#CC0001"></div>
+      <div class="fd" style="background:#fff;border:1px solid #333"></div>
+      <div class="fd" style="background:#003893"></div>
+      <div class="fd" style="background:#FFCC00"></div>
+    </div>
+    <span>Made with ❤️ in Malaysia 🇲🇾</span>
+    <a href="#">Privacy</a> · <a href="#">Terms</a>
+  </div>
+</footer>
+
+<script>
+// NAV scroll
+window.addEventListener('scroll',()=>{
+  document.getElementById('nav').style.background=window.scrollY>60?'rgba(6,8,15,.96)':'rgba(6,8,15,.8)';
+});
+// Reveal
+const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');obs.unobserve(e.target)}})},{threshold:.1});
+document.querySelectorAll('.rv').forEach(e=>obs.observe(e));
+
+// CALC
+function fmt(n){if(n>=1e9)return '$'+(n/1e9).toFixed(2)+'B';if(n>=1e6)return '$'+(n/1e6).toFixed(2)+'M';if(n>=1e3)return '$'+(n/1e3).toFixed(1)+'K';return '$'+n.toFixed(2)}
+function fmtRm(n){if(n>=1e6)return 'RM '+(n/1e6).toFixed(2)+'M';if(n>=1e3)return 'RM '+(n/1e3).toFixed(1)+'K';return 'RM '+n.toFixed(2)}
+
+function calc(){
+  const mp=parseFloat(document.getElementById('myPoints').value)||0;
+  const tp=parseFloat(document.getElementById('totalPoints').value)||1;
+  const fdv=parseFloat(document.getElementById('fdv').value)||0;
+  const pct=parseFloat(document.getElementById('pct').value)||0;
+  const rate=parseFloat(document.getElementById('usdmyr').value)||4.7;
+
+  const pool=fdv*(pct/100);
+  const share=mp/tp;
+  const val=pool*share;
+  const ppp=(pool/tp)*1000;
+  const rank=Math.round((1-share)*100000);
+
+  document.getElementById('r-usd').textContent=fmt(val);
+  document.getElementById('r-myr').textContent='≈ '+fmtRm(val*rate);
+  document.getElementById('r-pool').textContent=fmt(pool);
+  document.getElementById('r-share').textContent=(share*100).toFixed(4)+'%';
+  document.getElementById('r-ppp').textContent=ppp<0.01?'<$0.01':'$'+ppp.toFixed(4);
+  document.getElementById('r-rank').textContent='Top '+(share*100).toFixed(3)+'%';
+
+  // Risk meters
+  const fdvB=fdv/1e9;
+  const fdvRisk=Math.min(100,fdvB*8);
+  const dilRisk=Math.min(100,(tp/1e9)*15);
+  document.getElementById('fdv-risk').style.width=fdvRisk+'%';
+  document.getElementById('fdv-risk').style.background=fdvRisk>66?'#EF4444':fdvRisk>33?'#F59E0B':'#4ADE80';
+  document.getElementById('fdv-risk-lbl').textContent=fdvRisk>66?'High':fdvRisk>33?'Medium':'Low';
+  document.getElementById('dil-risk').style.width=dilRisk+'%';
+  document.getElementById('dil-risk').style.background=dilRisk>66?'#EF4444':dilRisk>33?'#F59E0B':'#4ADE80';
+  document.getElementById('dil-risk-lbl').textContent=dilRisk>66?'High':dilRisk>33?'Medium':'Low';
+}
+calc();
+
+function setPreset(id,val,btn){
+  document.getElementById(id).value=val;
+  if(btn){
+    btn.closest('.calc-preset').querySelectorAll('.preset-btn').forEach(b=>b.classList.remove('on'));
+    btn.classList.add('on');
+  }
+  calc();
+}
+
+function setProject(btn,name,fdvB,totalPts,pct){
+  document.querySelectorAll('#calcTabs .ctab').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  if(fdvB>0){
+    document.getElementById('fdv').value=fdvB*1e9;
+    document.getElementById('totalPoints').value=totalPts;
+    document.getElementById('pct').value=pct;
+    calc();
+  }
+}
+</script>
+</body>
+</html>

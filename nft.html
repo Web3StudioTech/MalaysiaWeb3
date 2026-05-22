@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NFT Hub — Malaysia Web3</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+.ph-orb-1{width:600px;height:600px;background:radial-gradient(circle,rgba(139,92,246,.2) 0%,transparent 65%);top:-150px;left:-100px}
+.ph-orb-2{width:500px;height:500px;background:radial-gradient(circle,rgba(255,204,0,.12) 0%,transparent 65%);bottom:-100px;right:-80px}
+
+/* NFT SHOWCASE */
+.nft-showcase{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;margin-top:2rem}
+.nft-item{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;
+transition:all .3s;cursor:pointer}
+.nft-item:hover{border-color:var(--border2);transform:translateY(-4px);box-shadow:0 16px 40px rgba(0,0,0,.4)}
+.nft-img{height:180px;display:flex;align-items:center;justify-content:center;font-size:3.5rem;
+position:relative;overflow:hidden}
+.nft-img-inner{width:100%;height:100%;display:flex;align-items:center;justify-content:center}
+.nft-body{padding:1rem}
+.nft-col{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:.3rem}
+.nft-name{font-size:.9rem;font-weight:700;margin-bottom:.4rem}
+.nft-price{font-size:.82rem;font-weight:600;color:var(--gold)}
+.nft-chain{font-size:.65rem;color:var(--muted)}
+
+/* CONCEPT GRID */
+.nft-concepts{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.1rem;margin-top:2rem}
+.nc{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.6rem;transition:all .3s}
+.nc:hover{border-color:var(--border2)}
+.nc-ico{font-size:1.8rem;margin-bottom:.9rem}
+.nc-title{font-size:1rem;font-weight:700;margin-bottom:.4rem}
+.nc-desc{font-size:.81rem;color:var(--muted);line-height:1.65}
+
+/* MARKETPLACE CARDS */
+.mkt-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem;margin-top:2rem}
+.mkt-card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:1.8rem;
+transition:all .3s;text-decoration:none;color:var(--text);display:block}
+.mkt-card:hover{border-color:var(--border2);transform:translateY(-3px)}
+.mkt-card::after{content:'';display:block;height:3px;margin-top:1.4rem;border-radius:3px;
+transform:scaleX(0);transition:transform .3s;transform-origin:left}
+.mkt-card:hover::after{transform:scaleX(1)}
+.mkt-card.pu::after{background:var(--blue)}
+.mkt-card.go::after{background:var(--gold)}
+.mkt-card.re::after{background:var(--red)}
+.mkt-card.gr::after{background:#4ADE80}
+.mkt-top{display:flex;align-items:center;gap:.9rem;margin-bottom:1rem}
+.mkt-logo{width:44px;height:44px;border-radius:12px;font-size:1.3rem;
+display:flex;align-items:center;justify-content:center;background:var(--bg3);flex-shrink:0}
+.mkt-name{font-size:1rem;font-weight:700}
+.mkt-chain{font-size:.73rem;color:var(--muted);margin-top:1px}
+.mkt-desc{font-size:.81rem;color:var(--muted);line-height:1.65;margin-bottom:.9rem}
+.mkt-stats{display:flex;gap:1.2rem}
+.ms-item .v{font-size:.88rem;font-weight:700}
+.ms-item .l{font-size:.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+
+/* HOW TO */
+.how-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem;margin-top:2rem}
+.how-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.6rem;
+display:flex;gap:1rem;align-items:flex-start;transition:all .3s}
+.how-card:hover{border-color:var(--border2)}
+.how-num{width:36px;height:36px;border-radius:10px;background:rgba(255,204,0,.1);
+border:1px solid rgba(255,204,0,.2);display:flex;align-items:center;justify-content:center;
+font-size:.85rem;font-weight:800;color:var(--gold);flex-shrink:0}
+.how-text h3{font-size:.92rem;font-weight:700;margin-bottom:.3rem}
+.how-text p{font-size:.79rem;color:var(--muted);line-height:1.6}
+
+/* MY BRAND TABLE */
+.my-nfts{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.1rem;margin-top:2rem}
+.my-nft{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.4rem;transition:all .3s;text-decoration:none;color:var(--text)}
+.my-nft:hover{border-color:var(--border2);transform:translateY(-2px)}
+.mn-flag{font-size:1.6rem;margin-bottom:.8rem}
+.mn-name{font-size:.95rem;font-weight:700;margin-bottom:.3rem}
+.mn-desc{font-size:.78rem;color:var(--muted);line-height:1.55;margin-bottom:.8rem}
+</style>
+</head>
+<body>
+<nav id="nav">
+  <a href="index.html" class="logo"><div class="logo-mark"><s></s><s></s><s></s><s></s></div>Malaysia<em>Web3</em></a>
+  <ul class="nav-links">
+    <li><a href="airdrop.html">Airdrops</a></li><li><a href="defi.html">DeFi</a></li>
+    <li><a href="nft.html" class="active">NFT</a></li><li><a href="bitcoin.html">Bitcoin</a></li><li><a href="altcoin.html">Altcoins</a></li>
+  </ul>
+  <div class="nav-r"><button class="btn-ghost">Sign In</button><button class="btn-cta">Join Free 🇲🇾</button></div>
+  <button class="hamburger" onclick="document.getElementById('mob').classList.toggle('open')">☰</button>
+</nav>
+<div class="mob-nav" id="mob">
+  <a href="airdrop.html">🪂 Airdrops</a><a href="defi.html">⚡ DeFi</a><a href="nft.html">🎨 NFT</a><a href="bitcoin.html">₿ Bitcoin</a><a href="altcoin.html">🚀 Altcoins</a>
+  <div class="mob-btns"><button class="btn-ghost" style="width:100%">Sign In</button><button class="btn-cta" style="width:100%;padding:11px">Join Free 🇲🇾</button></div>
+</div>
+
+<div class="page-hero">
+  <div class="ph-orb ph-orb-1"></div><div class="ph-orb ph-orb-2"></div>
+  <div class="page-hero-inner">
+    <div class="page-hero-lbl">🎨 NFT Hub</div>
+    <h1 class="page-hero-h1"><em style="color:#A78BFA">Non-Fungible</em><br>Tokens — own the<br><span style="color:var(--gold)">digital future</span></h1>
+    <p class="page-hero-sub">NFTs are unique digital assets verified on blockchains. From digital art and music to gaming items and real-world assets — NFTs are reshaping ownership. Discover global marketplaces and celebrate Malaysian creators.</p>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:2rem">
+      <a href="#marketplaces" class="btn-primary">🛒 Browse Marketplaces</a>
+      <a href="#malaysia-nfts" class="btn-outline">🇲🇾 Malaysian NFTs</a>
+    </div>
+  </div>
+</div>
+
+<!-- WHAT ARE NFTS -->
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="sec-lbl">NFT Basics</div>
+      <h2 class="sec-h2">What makes an NFT <em>unique?</em></h2>
+      <p class="sec-sub">NFT stands for Non-Fungible Token. Unlike Bitcoin (where every coin is identical), each NFT is one-of-a-kind — its ownership and provenance permanently recorded on a blockchain.</p>
+    </div>
+    <div class="nft-concepts">
+      <div class="nc rv d1"><div class="nc-ico">🖼️</div><h3 class="nc-title">Digital Art & Collectibles</h3><p class="nc-desc">Artists tokenise their work as NFTs, giving buyers verifiable ownership. Platforms like OpenSea have traded billions in digital art. Think of it as the internet's art market.</p></div>
+      <div class="nc rv d2"><div class="nc-ico">🎮</div><h3 class="nc-title">Gaming & Virtual Items</h3><p class="nc-desc">In-game characters, weapons, and land parcels as NFTs. Players truly own their assets — tradeable across marketplaces. Axie Infinity, Gods Unchained, Illuvium.</p></div>
+      <div class="nc rv d3"><div class="nc-ico">🎵</div><h3 class="nc-title">Music & Royalties</h3><p class="nc-desc">Musicians release tracks as NFTs, giving holders rights to royalty streams. Platforms like Sound.xyz let fans co-own music and earn from its success.</p></div>
+      <div class="nc rv d1"><div class="nc-ico">🏠</div><h3 class="nc-title">Real-World Assets (RWA)</h3><p class="nc-desc">Tokenise real estate, luxury goods, or event tickets as NFTs. Fractional ownership of physical assets becomes possible — even a RM 2M house can be split into 2,000 NFTs.</p></div>
+      <div class="nc rv d2"><div class="nc-ico">🪪</div><h3 class="nc-title">Identity & Credentials</h3><p class="nc-desc">Soulbound tokens (SBTs) — non-transferable NFTs — for diplomas, KYC passes, and community memberships. Your on-chain identity, permanently yours.</p></div>
+      <div class="nc rv d3"><div class="nc-ico">₿</div><h3 class="nc-title">Bitcoin Ordinals</h3><p class="nc-desc">NFTs inscribed directly onto individual satoshis on Bitcoin. No smart contracts needed — data lives on the most secure blockchain forever. Growing rapidly in Malaysia.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- SAMPLE NFTs -->
+<section class="sec sec-alt">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="sec-lbl">Trending NFTs</div>
+      <h2 class="sec-h2">Popular <span class="gold">collections</span> right now</h2>
+    </div>
+    <div class="nft-showcase">
+      <div class="nft-item rv d1"><div class="nft-img" style="background:linear-gradient(135deg,#1a1a2e,#16213e)"><div class="nft-img-inner">🐒</div></div><div class="nft-body"><div class="nft-col">BAYC</div><div class="nft-name">Bored Ape #4382</div><div class="nft-price">Ξ 18.5 ETH</div><div class="nft-chain">Ethereum</div></div></div>
+      <div class="nft-item rv d2"><div class="nft-img" style="background:linear-gradient(135deg,#2d1b69,#11998e)"><div class="nft-img-inner">👾</div></div><div class="nft-body"><div class="nft-col">CryptoPunks</div><div class="nft-name">Punk #2140</div><div class="nft-price">Ξ 67 ETH</div><div class="nft-chain">Ethereum</div></div></div>
+      <div class="nft-item rv d3"><div class="nft-img" style="background:linear-gradient(135deg,#CC0001,#550000)"><div class="nft-img-inner">🎭</div></div><div class="nft-body"><div class="nft-col">Azuki</div><div class="nft-name">Azuki #9841</div><div class="nft-price">Ξ 8.2 ETH</div><div class="nft-chain">Ethereum</div></div></div>
+      <div class="nft-item rv d1"><div class="nft-img" style="background:linear-gradient(135deg,#003893,#001144)"><div class="nft-img-inner">🌙</div></div><div class="nft-body"><div class="nft-col">Mad Lads</div><div class="nft-name">Mad Lad #5512</div><div class="nft-price">◎ 220 SOL</div><div class="nft-chain">Solana</div></div></div>
+      <div class="nft-item rv d2"><div class="nft-img" style="background:linear-gradient(135deg,#FFCC00,#FF6600)"><div class="nft-img-inner">🎨</div></div><div class="nft-body"><div class="nft-col">BatikNFT</div><div class="nft-name">Batik #0192</div><div class="nft-price">0.15 ETH</div><div class="nft-chain">Ethereum · 🇲🇾</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- MARKETPLACES -->
+<section class="sec" id="marketplaces">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="sec-lbl">NFT Marketplaces</div>
+      <h2 class="sec-h2">Where to <em>buy, sell</em> &amp; discover NFTs</h2>
+      <p class="sec-sub">From the world's largest general marketplaces to niche platforms for music, gaming, and Bitcoin Ordinals.</p>
+    </div>
+
+    <!-- Multi-chain -->
+    <div style="margin-bottom:2.5rem">
+      <div class="proto-group-title rv" style="font-size:.73rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:1rem;padding-bottom:.5rem;border-bottom:1px solid var(--border)">🌐 Multi-Chain Marketplaces</div>
+      <div class="mkt-grid">
+        <a href="https://opensea.io" target="_blank" class="mkt-card pu rv d1">
+          <div class="mkt-top"><div class="mkt-logo">🌊</div><div><div class="mkt-name">OpenSea</div><div class="mkt-chain">ETH · Polygon · Solana · BNB</div></div></div>
+          <p class="mkt-desc">World's largest NFT marketplace. 2M+ collections, every chain. Best for discoverability and secondary market trading.</p>
+          <div class="mkt-stats"><div class="ms-item"><div class="v">$20B+</div><div class="l">All-Time Vol</div></div><div class="ms-item"><div class="v">2.5%</div><div class="l">Fee</div></div></div>
+        </a>
+        <a href="https://blur.io" target="_blank" class="mkt-card re rv d2">
+          <div class="mkt-top"><div class="mkt-logo">💨</div><div><div class="mkt-name">Blur</div><div class="mkt-chain">Ethereum</div></div></div>
+          <p class="mkt-desc">Pro NFT marketplace for traders. Zero fees, bulk buying, sweep floors. BLUR airdrop rewarded active traders.</p>
+          <div class="mkt-stats"><div class="ms-item"><div class="v">0%</div><div class="l">Marketplace Fee</div></div><div class="ms-item"><div class="v">Pro</div><div class="l">Trader Focus</div></div></div>
+        </a>
+        <a href="https://magiceden.io" target="_blank" class="mkt-card go rv d3">
+          <div class="mkt-top"><div class="mkt-logo">🪄</div><div><div class="mkt-name">Magic Eden</div><div class="mkt-chain">Solana · ETH · BTC Ordinals</div></div></div>
+          <p class="mkt-desc">Dominant Solana marketplace, now multi-chain. Best for Solana NFTs and Bitcoin Ordinals. Low fees, great UX.</p>
+          <div class="mkt-stats"><div class="ms-item"><div class="v">$5B+</div><div class="l">Volume</div></div><div class="ms-item"><div class="v">2%</div><div class="l">Fee</div></div></div>
+        </a>
+      </div>
+    </div>
+
+    <!-- Bitcoin Ordinals -->
+    <div style="margin-bottom:2.5rem">
+      <div class="proto-group-title rv" style="font-size:.73rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:1rem;padding-bottom:.5rem;border-bottom:1px solid var(--border)">₿ Bitcoin Ordinals & Inscriptions</div>
+      <div class="lnk-grid rv d1">
+        <a href="https://ordinals.com" target="_blank" class="lnk-card"><div class="lnk-icon">₿</div><div><div class="lnk-name">Ordinals.com</div><div class="lnk-desc">Official inscription explorer. Browse all Bitcoin inscriptions by number or content type.</div><span class="tag tag-or" style="margin-top:.5rem">Bitcoin Native</span></div><div class="lnk-arrow">↗</div></a>
+        <a href="https://magiceden.io/ordinals" target="_blank" class="lnk-card"><div class="lnk-icon">🪄</div><div><div class="lnk-name">Magic Eden Ordinals</div><div class="lnk-desc">Largest Ordinals marketplace. Trade BRC-20, inscriptions, Bitcoin stamps. Launchpad for new collections.</div></div><div class="lnk-arrow">↗</div></a>
+        <a href="https://gamma.io" target="_blank" class="lnk-card"><div class="lnk-icon">🔶</div><div><div class="lnk-name">Gamma.io</div><div class="lnk-desc">Ordinals launchpad and marketplace. Used by many Malaysian Ordinals projects. No-code minting tools.</div></div><div class="lnk-arrow">↗</div></a>
+        <a href="https://unisat.io/market" target="_blank" class="lnk-card"><div class="lnk-icon">⚡</div><div><div class="lnk-name">UniSat Marketplace</div><div class="lnk-desc">BRC-20 tokens and Ordinals trading. Most popular Bitcoin wallet + marketplace combo.</div></div><div class="lnk-arrow">↗</div></a>
+      </div>
+    </div>
+
+    <!-- Speciality -->
+    <div>
+      <div class="proto-group-title rv" style="font-size:.73rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:1rem;padding-bottom:.5rem;border-bottom:1px solid var(--border)">🎯 Speciality Platforms</div>
+      <div class="lnk-grid rv d2">
+        <a href="https://foundation.app" target="_blank" class="lnk-card"><div class="lnk-icon">🏛️</div><div><div class="lnk-name">Foundation</div><div class="lnk-desc">Invite-only platform for serious digital artists. Higher quality, higher prices, focused on fine art NFTs.</div></div><div class="lnk-arrow">↗</div></a>
+        <a href="https://sound.xyz" target="_blank" class="lnk-card"><div class="lnk-icon">🎵</div><div><div class="lnk-name">Sound.xyz</div><div class="lnk-desc">Music NFTs. Fans co-own tracks and earn a share of streaming royalties. Built for independent musicians.</div></div><div class="lnk-arrow">↗</div></a>
+        <a href="https://tensor.trade" target="_blank" class="lnk-card"><div class="lnk-icon">🤖</div><div><div class="lnk-name">Tensor</div><div class="lnk-desc">Pro Solana NFT trader platform. Real-time data, bulk buying, sweep tools, bid management.</div></div><div class="lnk-arrow">↗</div></a>
+        <a href="https://niftygateway.com" target="_blank" class="lnk-card"><div class="lnk-icon">💎</div><div><div class="lnk-name">Nifty Gateway</div><div class="lnk-desc">Curated drops from top artists. Credit card support makes it beginner-friendly for fiat buyers.</div></div><div class="lnk-arrow">↗</div></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MALAYSIA NFTS -->
+<section class="sec sec-alt" id="malaysia-nfts">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="sec-lbl">Made in Malaysia 🇲🇾</div>
+      <h2 class="sec-h2">Malaysian <em>NFT</em> creators &amp; projects</h2>
+      <p class="sec-sub">From Doginals to Ordinals, Malaysian artists and builders are making their mark on the global NFT scene.</p>
+    </div>
+    <div class="my-nfts">
+      <a href="https://doginalsfepe.com" target="_blank" class="my-nft rv d1">
+        <div class="mn-flag">🐕</div><div class="mn-name">DoginalsFepe</div>
+        <p class="mn-desc">4,049-inscription Doginals collection on Dogecoin blockchain. Sub-100K inscriptions featuring Bob &amp; Victor Fepe.</p>
+        <span class="tag tag-or">Dogecoin</span>
+      </a>
+      <a href="https://pixelquote.github.io" target="_blank" class="my-nft rv d2">
+        <div class="mn-flag">🖼️</div><div class="mn-name">PixelQuote Ordinals</div>
+        <p class="mn-desc">263 MP4 Digital Artifacts on Bitcoin. Sub-100K Ordinals inscriptions with motivational pixel art quotes.</p>
+        <span class="tag tag-or">Bitcoin Ordinals</span>
+      </a>
+      <a href="#" class="my-nft rv d3">
+        <div class="mn-flag">🎭</div><div class="mn-name">BatikNFT</div>
+        <p class="mn-desc">Celebrating Malaysian batik culture on Ethereum. Each piece hand-drawn inspired by traditional Pelangi and Canting batik patterns.</p>
+        <span class="tag tag-b">Ethereum</span>
+      </a>
+      <a href="https://superbellalliance.github.io/super-bell-alliance" target="_blank" class="my-nft rv d1">
+        <div class="mn-flag">🔔</div><div class="mn-name">Super Bell Alliance</div>
+        <p class="mn-desc">10,000-piece NFT collection on Bellscoin blockchain. 9,841 inscribed. Malaysia's first Bellscoin NFT project.</p>
+        <span class="tag tag-g">Bellscoin</span>
+      </a>
+      <a href="#" class="my-nft rv d2">
+        <div class="mn-flag">🏯</div><div class="mn-name">KLCC Genesis</div>
+        <p class="mn-desc">Generative art inspired by KL's iconic skyline. 2,000 unique pieces on Polygon. Sold out in 48 hours at launch.</p>
+        <span class="tag tag-pu">Polygon</span>
+      </a>
+      <a href="#" class="my-nft rv d3">
+        <div class="mn-flag">🌴</div><div class="mn-name">Nusa PFP</div>
+        <p class="mn-desc">10,000 PFP collection celebrating Nusantara culture. Featuring 200+ hand-drawn cultural traits across Malaysia, Indonesia, and Brunei.</p>
+        <span class="tag tag-b">Solana</span>
+      </a>
+    </div>
+    <div style="text-align:center;margin-top:2.5rem" class="rv">
+      <p style="color:var(--muted);font-size:.85rem;margin-bottom:1.2rem">Building an NFT project in Malaysia? Get listed on MalaysiaWeb3.</p>
+      <button class="btn-primary" style="margin:0 auto">Submit Your Project →</button>
+    </div>
+  </div>
+</section>
+
+<!-- HOW TO BUY -->
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="sec-lbl">Getting Started</div>
+      <h2 class="sec-h2">How to buy your <em>first NFT</em></h2>
+    </div>
+    <div class="how-grid">
+      <div class="how-card rv d1"><div class="how-num">01</div><div class="how-text"><h3>Set Up a Wallet</h3><p>MetaMask for Ethereum NFTs. Phantom or Solflare for Solana. UniSat for Bitcoin Ordinals. Never share your seed phrase.</p></div></div>
+      <div class="how-card rv d2"><div class="how-num">02</div><div class="how-text"><h3>Get the Right Crypto</h3><p>Buy ETH from Luno or MX Global (available in Malaysia). Transfer to your wallet. Keep extra for gas fees.</p></div></div>
+      <div class="how-card rv d3"><div class="how-num">03</div><div class="how-text"><h3>Research the Collection</h3><p>Check Twitter, Discord, roadmap, team doxxing, smart contract audit. Floor price history on DappRadar or NFTGo.</p></div></div>
+      <div class="how-card rv d1"><div class="how-num">04</div><div class="how-text"><h3>Connect & Buy</h3><p>Go to the marketplace. Connect wallet. Click "Buy Now" or place a bid. Confirm the transaction and gas fee.</p></div></div>
+      <div class="how-card rv d2"><div class="how-num">05</div><div class="how-text"><h3>Store Safely</h3><p>For high-value NFTs, transfer to a hardware wallet (Ledger). Never click unknown links or approve unknown contracts.</p></div></div>
+      <div class="how-card rv d3"><div class="how-num">06</div><div class="how-text"><h3>Track & Sell</h3><p>Use NFTGo or Compass to track floor prices. List on OpenSea or Blur when ready to sell. Set royalty-aware listings.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<footer class="foot">
+  <a href="index.html" class="foot-logo"><div class="logo-mark"><s></s><s></s><s></s><s></s></div>Malaysia<em style="font-style:normal;color:var(--gold)">Web3</em></a>
+  <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+    <div class="flag-dots"><div class="fd" style="background:#CC0001"></div><div class="fd" style="background:#fff;border:1px solid #333"></div><div class="fd" style="background:#003893"></div><div class="fd" style="background:#FFCC00"></div></div>
+    <span>Made with ❤️ in Malaysia 🇲🇾</span><a href="#">Privacy</a> · <a href="#">Terms</a>
+  </div>
+</footer>
+
+<script>
+window.addEventListener('scroll',()=>{document.getElementById('nav').style.background=window.scrollY>60?'rgba(6,8,15,.96)':'rgba(6,8,15,.8)'});
+const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');obs.unobserve(e.target)}})},{threshold:.1});
+document.querySelectorAll('.rv').forEach(e=>obs.observe(e));
+</script>
+</body>
+</html>

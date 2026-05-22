@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Malaysia Web3 — Your Home for Crypto & Blockchain</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --my-red:    #CC0001;
+  --my-blue:   #003893;
+  --my-yellow: #FFCC00;
+  --my-white:  #FFFFFF;
+  --bg:        #06080F;
+  --bg2:       #0A0D18;
+  --bg3:       #0E1220;
+  --card:      #111827;
+  --card2:     #161D2E;
+  --text:      #F0F2F8;
+  --muted:     #6B7A99;
+  --border:    rgba(255,255,255,0.07);
+  --border2:   rgba(255,255,255,0.13);
+  --font: 'Plus Jakarta Sans', sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--bg);color:var(--text);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+button{cursor:pointer;font-family:inherit;border:none}
+
+/* grain */
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:999;opacity:.03;
+background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;align-items:center;
+justify-content:space-between;padding:0 3rem;height:70px;
+background:rgba(6,8,15,.75);backdrop-filter:blur(24px) saturate(1.5);
+border-bottom:1px solid var(--border);transition:background .3s}
+.logo{display:flex;align-items:center;gap:10px;font-size:1.05rem;font-weight:800;letter-spacing:-.02em}
+.logo-mark{width:34px;height:34px;border-radius:9px;overflow:hidden;
+display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;flex-shrink:0}
+.logo-mark s:nth-child(1){background:var(--my-red);text-decoration:none}
+.logo-mark s:nth-child(2){background:var(--my-blue);text-decoration:none}
+.logo-mark s:nth-child(3){background:var(--my-yellow);text-decoration:none}
+.logo-mark s:nth-child(4){background:rgba(255,255,255,.85);text-decoration:none}
+.logo em{font-style:normal;color:var(--my-yellow)}
+.nav-links{display:flex;align-items:center;gap:2.2rem;list-style:none}
+.nav-links a{font-size:.875rem;font-weight:500;color:var(--muted);transition:color .2s;position:relative}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;right:0;height:1.5px;
+background:var(--my-yellow);transform:scaleX(0);transition:transform .25s;transform-origin:left}
+.nav-links a:hover{color:var(--text)}
+.nav-links a:hover::after{transform:scaleX(1)}
+.nav-r{display:flex;align-items:center;gap:10px}
+.btn-ghost{padding:9px 20px;border-radius:10px;font-size:.85rem;font-weight:600;
+background:transparent;border:1px solid var(--border2);color:var(--text);transition:all .2s}
+.btn-ghost:hover{border-color:rgba(255,204,0,.4);color:var(--my-yellow)}
+.btn-cta{padding:9px 22px;border-radius:10px;font-size:.85rem;font-weight:700;
+background:var(--my-red);color:#fff;transition:all .2s;box-shadow:0 0 0 0 rgba(204,0,1,.4)}
+.btn-cta:hover{background:#e00001;box-shadow:0 0 28px rgba(204,0,1,.45);transform:translateY(-1px)}
+.hamburger{display:none;background:none;color:var(--text);font-size:1.4rem;padding:4px}
+.mob-nav{display:none;position:fixed;inset:70px 0 0;background:rgba(6,8,15,.97);
+backdrop-filter:blur(20px);flex-direction:column;padding:2.5rem 2rem;gap:1.5rem;z-index:499;
+border-bottom:1px solid var(--border)}
+.mob-nav.open{display:flex}
+.mob-nav a{font-size:1.1rem;font-weight:600;color:var(--muted)}
+.mob-nav a:hover{color:var(--text)}
+.mob-btns{display:flex;flex-direction:column;gap:10px;margin-top:.5rem}
+
+/* ── HERO ── */
+#hero{min-height:100vh;display:flex;align-items:center;padding:9rem 3rem 6rem;
+position:relative;overflow:hidden}
+.hero-bg{position:absolute;inset:0;pointer-events:none;z-index:0}
+.orb{position:absolute;border-radius:50%;filter:blur(120px);pointer-events:none}
+.orb-r{width:700px;height:700px;background:radial-gradient(circle,rgba(204,0,1,.2) 0%,transparent 65%);top:-180px;left:-160px}
+.orb-b{width:600px;height:600px;background:radial-gradient(circle,rgba(0,56,147,.28) 0%,transparent 65%);top:80px;right:-120px}
+.orb-g{width:420px;height:420px;background:radial-gradient(circle,rgba(255,204,0,.13) 0%,transparent 65%);bottom:-60px;left:42%}
+.hero-grid{position:absolute;inset:0;
+background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);
+background-size:70px 70px;
+-webkit-mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 20%,transparent 100%);
+mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 20%,transparent 100%)}
+.hero-stripes{position:absolute;inset:0;overflow:hidden}
+.hero-stripes::before{content:'';position:absolute;left:-10%;right:-10%;top:0;bottom:0;
+background:repeating-linear-gradient(180deg,rgba(204,0,1,.035) 0,rgba(204,0,1,.035) 38px,transparent 38px,transparent 76px);
+transform:skewY(-7deg);transform-origin:top left}
+
+.hero-inner{position:relative;z-index:1;max-width:1200px;margin:0 auto;width:100%;
+display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center}
+.hero-copy{max-width:580px}
+
+.hero-pill{display:inline-flex;align-items:center;gap:8px;
+background:rgba(255,204,0,.08);border:1px solid rgba(255,204,0,.22);
+border-radius:100px;padding:6px 16px;margin-bottom:2rem;
+font-size:.77rem;font-weight:800;color:var(--my-yellow);letter-spacing:.1em;text-transform:uppercase;
+animation:fadeUp .7s ease both}
+.pill-dot{width:7px;height:7px;border-radius:50%;background:var(--my-yellow);animation:blink 2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+
+.hero-h1{font-size:clamp(2.8rem,6vw,5rem);font-weight:800;line-height:1.03;
+letter-spacing:-.04em;animation:fadeUp .7s .08s ease both}
+.hero-h1 .red{color:var(--my-red)}
+.hero-h1 .gold{color:var(--my-yellow)}
+.hero-h1 .blue{color:#6B9FEF}
+
+.hero-sub{margin-top:1.6rem;font-size:1.05rem;color:var(--muted);line-height:1.75;
+font-weight:400;max-width:470px;animation:fadeUp .7s .16s ease both}
+
+.hero-actions{margin-top:2.8rem;display:flex;gap:12px;flex-wrap:wrap;animation:fadeUp .7s .24s ease both}
+.btn-primary{padding:15px 32px;border-radius:14px;font-size:1rem;font-weight:800;
+background:var(--my-red);color:#fff;transition:all .25s;display:inline-flex;align-items:center;gap:8px;
+box-shadow:0 4px 30px rgba(204,0,1,.4)}
+.btn-primary:hover{background:#e00001;transform:translateY(-2px);box-shadow:0 10px 40px rgba(204,0,1,.5)}
+.btn-outline{padding:15px 32px;border-radius:14px;font-size:1rem;font-weight:600;
+background:rgba(255,255,255,.05);color:var(--text);border:1px solid var(--border2);transition:all .25s}
+.btn-outline:hover{background:rgba(255,255,255,.1);border-color:rgba(255,204,0,.35)}
+
+.hero-stats{margin-top:3.5rem;display:flex;gap:2.5rem;flex-wrap:wrap;animation:fadeUp .7s .35s ease both}
+.hs-n{font-size:1.75rem;font-weight:800;letter-spacing:-.03em;
+background:linear-gradient(135deg,var(--my-yellow),#FF9500);
+-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hs-l{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-top:2px}
+
+/* Phone mockup */
+.hero-visual{position:relative;display:flex;justify-content:center;align-items:center;
+animation:fadeUp .7s .2s ease both}
+.phone{width:290px;background:var(--card2);border-radius:44px;
+border:1px solid rgba(255,255,255,.1);padding:13px;
+box-shadow:0 40px 100px rgba(0,0,0,.75),0 0 0 1px rgba(255,255,255,.04);
+position:relative}
+.p-notch{width:85px;height:26px;background:var(--bg);border-radius:0 0 18px 18px;
+margin:0 auto 10px;position:relative;z-index:2}
+.p-screen{border-radius:32px;overflow:hidden;background:#090D1A}
+.p-head{padding:14px 14px 10px;display:flex;justify-content:space-between;align-items:center}
+.p-brand{font-size:.7rem;font-weight:800;color:var(--my-yellow);letter-spacing:.1em}
+.p-avatar{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--my-red),var(--my-blue))}
+.p-bal{padding:6px 14px 18px;text-align:center}
+.p-bal-lbl{font-size:.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px}
+.p-bal-amt{font-size:1.9rem;font-weight:800;letter-spacing:-.03em}
+.p-bal-sub{font-size:.7rem;color:#22C55E;margin-top:3px}
+.p-acts{display:flex;justify-content:space-around;padding:0 6px 18px}
+.p-act{display:flex;flex-direction:column;align-items:center;gap:5px}
+.p-act-ico{width:40px;height:40px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:.9rem}
+.p-act-lbl{font-size:.58rem;color:var(--muted)}
+.aic-r{background:rgba(204,0,1,.18)} .aic-b{background:rgba(0,56,147,.28)}
+.aic-g{background:rgba(255,204,0,.13)} .aic-w{background:rgba(255,255,255,.06)}
+.p-div{height:1px;background:var(--border);margin:0 14px 14px}
+.p-assets{padding:0 14px 14px}
+.p-assets-ttl{font-size:.62rem;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px}
+.p-asset{display:flex;justify-content:space-between;align-items:center;margin-bottom:11px}
+.p-asset-l{display:flex;align-items:center;gap:7px}
+.p-asset-ico{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700}
+.p-asset-name{font-size:.7rem;font-weight:700}
+.p-asset-qty{font-size:.6rem;color:var(--muted)}
+.p-asset-val{font-size:.7rem;font-weight:700}
+.p-asset-chg{font-size:.58rem;text-align:right;margin-top:1px}
+.up{color:#22C55E}.dn{color:#EF4444}
+
+.fb{position:absolute;background:var(--card2);border:1px solid var(--border2);
+border-radius:13px;padding:9px 13px;white-space:nowrap;font-size:.73rem;font-weight:600;
+animation:floatY 4s ease-in-out infinite;box-shadow:0 8px 30px rgba(0,0,0,.45)}
+.fb1{top:30px;right:-75px;animation-delay:0s}
+.fb2{bottom:110px;left:-85px;animation-delay:1.5s}
+.fb3{bottom:30px;right:-65px;animation-delay:.9s}
+.fd{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:5px}
+.fd-g{background:#22C55E;box-shadow:0 0 6px #22C55E}.fd-y{background:var(--my-yellow)}.fd-r{background:var(--my-red)}
+@keyframes floatY{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+
+/* ── TICKER ── */
+.ticker{border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+background:rgba(255,204,0,.018);overflow:hidden;padding:12px 0}
+.ticker-inner{display:inline-flex;gap:2.5rem;white-space:nowrap;animation:tickScroll 36s linear infinite}
+.ticker:hover .ticker-inner{animation-play-state:paused}
+@keyframes tickScroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.ti{display:inline-flex;align-items:center;gap:7px;font-size:.79rem;font-weight:500;color:var(--muted)}
+.ti .sym{color:var(--text);font-weight:700}
+.ti-sep{color:rgba(255,255,255,.1)}
+
+/* ── SECTIONS ── */
+section{padding:7rem 3rem;position:relative}
+.wrap{max-width:1180px;margin:0 auto}
+.sec-lbl{font-size:.71rem;font-weight:800;letter-spacing:.15em;text-transform:uppercase;
+color:var(--my-yellow);margin-bottom:1rem;display:flex;align-items:center;gap:8px}
+.sec-lbl::before{content:'';width:18px;height:2px;background:var(--my-yellow);border-radius:2px;flex-shrink:0}
+.sec-h2{font-size:clamp(1.9rem,4.5vw,3.1rem);font-weight:800;line-height:1.07;letter-spacing:-.035em}
+.sec-h2 em{font-style:normal;color:var(--my-red)}
+.sec-h2 .gold{color:var(--my-yellow)}
+.sec-sub{margin-top:1.1rem;color:var(--muted);font-size:1rem;line-height:1.75;max-width:500px}
+
+/* ── BENTO GRID (features) ── */
+#features{background:var(--bg2)}
+.bento{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:auto auto;
+gap:1.5px;background:var(--border);border-radius:24px;overflow:hidden;margin-top:3.5rem}
+.bc{background:var(--card);padding:2.4rem 2.1rem;position:relative;overflow:hidden;transition:background .3s}
+.bc:hover{background:var(--card2)}
+.bc.tall{grid-row:span 2}
+.bc.wide{grid-column:span 2}
+.bc::before{content:'';position:absolute;width:220px;height:220px;border-radius:50%;filter:blur(70px);
+opacity:0;transition:opacity .4s;pointer-events:none}
+.bc:hover::before{opacity:1}
+.bc.cr::before{background:var(--my-red);top:-70px;left:-70px}
+.bc.cb::before{background:var(--my-blue);top:-70px;right:-70px}
+.bc.cg::before{background:var(--my-yellow);bottom:-70px;left:-70px}
+.b-ico{width:50px;height:50px;border-radius:15px;display:flex;align-items:center;
+justify-content:center;font-size:1.3rem;margin-bottom:1.4rem}
+.b-ico.r{background:rgba(204,0,1,.14);border:1px solid rgba(204,0,1,.22)}
+.b-ico.b{background:rgba(0,56,147,.2);border:1px solid rgba(0,56,147,.3)}
+.b-ico.g{background:rgba(255,204,0,.11);border:1px solid rgba(255,204,0,.2)}
+.b-ico.w{background:rgba(255,255,255,.05);border:1px solid var(--border2)}
+.b-num{font-size:3.2rem;font-weight:800;line-height:1;letter-spacing:-.04em;margin-bottom:.35rem;
+background:linear-gradient(135deg,var(--my-yellow),#FF9500);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.b-title{font-size:1.15rem;font-weight:700;margin-bottom:.55rem;letter-spacing:-.02em}
+.b-desc{font-size:.85rem;color:var(--muted);line-height:1.7}
+.b-tag{display:inline-block;margin-top:1.2rem;padding:4px 12px;border-radius:100px;
+font-size:.68rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase}
+.b-tag.r{background:rgba(204,0,1,.12);color:#FF7070}
+.b-tag.b{background:rgba(0,56,147,.2);color:#7EAEF7}
+.b-tag.g{background:rgba(255,204,0,.11);color:var(--my-yellow)}
+.b-tag.gr{background:rgba(34,197,94,.1);color:#4ADE80}
+.mini-chart{margin-top:1.4rem;height:65px}
+.mini-chart svg{width:100%;height:100%}
+
+/* ── SHOWCASE BLOCKS ── */
+.showcase{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;padding:6rem 3rem}
+.showcase.alt{direction:rtl}
+.showcase.alt>*{direction:ltr}
+.showcase+.showcase{border-top:1px solid var(--border)}
+.sc-visual{position:relative;display:flex;justify-content:center}
+.sc-card{background:var(--card2);border:1px solid var(--border2);border-radius:22px;padding:1.8rem;
+width:100%;max-width:400px;box-shadow:0 30px 80px rgba(0,0,0,.55)}
+.sc-card-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.4rem}
+.sc-ttl{font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.sc-badge{font-size:.65rem;font-weight:700;padding:3px 10px;border-radius:100px;
+background:rgba(34,197,94,.12);color:#4ADE80;border:1px solid rgba(34,197,94,.2)}
+.sc-news{display:flex;gap:11px;padding:13px;border-radius:13px;background:var(--card);
+border:1px solid var(--border);margin-bottom:9px;cursor:pointer;transition:border-color .2s}
+.sc-news:hover{border-color:var(--border2)}
+.sc-n-emoji{font-size:1.4rem;flex-shrink:0}
+.sc-n-cat{font-size:.61rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;
+color:var(--my-yellow);margin-bottom:3px}
+.sc-n-hl{font-size:.78rem;font-weight:600;line-height:1.4}
+.sc-n-time{font-size:.65rem;color:var(--muted);margin-top:3px}
+.eco-mini{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.em-card{background:var(--card);border:1px solid var(--border);border-radius:13px;padding:13px;
+cursor:pointer;transition:all .25s}
+.em-card:hover{border-color:var(--border2);transform:translateY(-2px)}
+.em-ico{font-size:1.3rem;margin-bottom:7px}
+.em-name{font-size:.78rem;font-weight:700}
+.em-type{font-size:.65rem;color:var(--muted);margin-top:1px}
+.em-tag{display:inline-block;margin-top:7px;padding:2px 8px;border-radius:100px;
+font-size:.6rem;font-weight:700;text-transform:uppercase;background:rgba(0,56,147,.2);color:#7EAEF7}
+.ev-item{display:flex;gap:13px;align-items:flex-start;padding:13px;border-radius:13px;
+background:var(--card);border:1px solid var(--border);margin-bottom:9px}
+.ev-date{width:46px;text-align:center;background:rgba(204,0,1,.11);border:1px solid rgba(204,0,1,.2);
+border-radius:10px;padding:7px 0;flex-shrink:0}
+.ev-day{font-size:1.25rem;font-weight:800;color:var(--my-red);line-height:1}
+.ev-mon{font-size:.58rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.ev-info-title{font-size:.8rem;font-weight:700;margin-bottom:3px}
+.ev-info-meta{font-size:.68rem;color:var(--muted)}
+.sc-copy .sec-lbl{margin-bottom:1.2rem}
+.sc-link{display:inline-flex;align-items:center;gap:6px;font-size:.9rem;font-weight:700;
+color:var(--my-yellow);transition:gap .2s;margin-top:.5rem}
+.sc-link:hover{gap:10px}
+
+/* ── LEARN ── */
+#learn{background:var(--bg2)}
+.learn-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.2rem;margin-top:3.5rem}
+.lc{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:2rem;
+position:relative;overflow:hidden;cursor:pointer;transition:all .3s}
+.lc::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;
+transform:scaleX(0);transition:transform .3s;transform-origin:left}
+.lc.lc-r::after{background:var(--my-red)}
+.lc.lc-b::after{background:var(--my-blue)}
+.lc.lc-g::after{background:var(--my-yellow)}
+.lc:hover{border-color:var(--border2);transform:translateY(-4px)}
+.lc:hover::after{transform:scaleX(1)}
+.lc-ico{font-size:1.9rem;margin-bottom:1.1rem}
+.lc-lvl{display:inline-block;padding:3px 10px;border-radius:100px;font-size:.63rem;
+font-weight:800;text-transform:uppercase;letter-spacing:.07em;margin-bottom:.75rem}
+.lv-beg{background:rgba(34,197,94,.1);color:#4ADE80}
+.lv-int{background:rgba(255,204,0,.1);color:var(--my-yellow)}
+.lv-adv{background:rgba(204,0,1,.12);color:#FF7070}
+.lc-title{font-size:1.08rem;font-weight:700;margin-bottom:.45rem;letter-spacing:-.02em}
+.lc-desc{font-size:.83rem;color:var(--muted);line-height:1.65}
+.lc-foot{margin-top:1.4rem;display:flex;justify-content:space-between;align-items:center}
+.lc-lessons{font-size:.73rem;color:var(--muted)}
+.lc-arr{width:30px;height:30px;border-radius:50%;background:var(--card2);border:1px solid var(--border2);
+display:flex;align-items:center;justify-content:center;font-size:.85rem;transition:all .2s}
+.lc:hover .lc-arr{background:var(--my-red);border-color:var(--my-red)}
+
+/* ── CTA ── */
+#cta{background:var(--bg);padding:7rem 3rem;position:relative;overflow:hidden}
+.cta-orbs{position:absolute;inset:0;pointer-events:none}
+.cta-or{position:absolute;border-radius:50%;filter:blur(90px)}
+.cta-or-r{width:600px;height:600px;background:radial-gradient(circle,rgba(204,0,1,.17) 0%,transparent 70%);left:-180px;top:50%;transform:translateY(-50%)}
+.cta-or-b{width:500px;height:500px;background:radial-gradient(circle,rgba(0,56,147,.22) 0%,transparent 70%);right:-120px;top:50%;transform:translateY(-50%)}
+.cta-or-g{width:400px;height:400px;background:radial-gradient(circle,rgba(255,204,0,.1) 0%,transparent 70%);left:50%;top:-80px;transform:translateX(-50%)}
+.cta-inner{position:relative;z-index:1;max-width:780px;margin:0 auto;text-align:center}
+.cta-flag{font-size:2.8rem;margin-bottom:1.5rem}
+.cta-h2{font-size:clamp(2.1rem,5vw,3.8rem);font-weight:800;letter-spacing:-.04em;line-height:1.06;margin-bottom:1.1rem}
+.cta-h2 em{font-style:normal;color:var(--my-red)}
+.cta-sub{font-size:1rem;color:var(--muted);line-height:1.75;margin-bottom:2.4rem;max-width:560px;margin-left:auto;margin-right:auto}
+.cta-btns{display:flex;gap:13px;justify-content:center;flex-wrap:wrap}
+.cta-stats{margin-top:4rem;display:flex;justify-content:center;gap:4rem;flex-wrap:wrap}
+.cs-n{font-size:1.9rem;font-weight:800;letter-spacing:-.03em;
+background:linear-gradient(135deg,#fff,rgba(255,255,255,.55));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.cs-l{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-top:4px}
+
+/* ── FOOTER ── */
+footer{background:var(--bg2);border-top:1px solid var(--border);padding:5rem 3rem 2.5rem}
+.ft-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;max-width:1180px;margin:0 auto 4rem}
+.ft-brand p{font-size:.84rem;color:var(--muted);line-height:1.7;margin:1rem 0 1.5rem;max-width:270px}
+.ft-socials{display:flex;gap:8px}
+.ft-socials a{width:37px;height:37px;border-radius:10px;background:var(--card);
+border:1px solid var(--border);display:flex;align-items:center;justify-content:center;
+font-size:.85rem;transition:all .2s}
+.ft-socials a:hover{border-color:rgba(255,204,0,.35);background:rgba(255,204,0,.07)}
+.ft-col-h{font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.12em;
+color:var(--text);margin-bottom:1.2rem}
+.ft-links{list-style:none;display:flex;flex-direction:column;gap:.65rem}
+.ft-links a{font-size:.84rem;color:var(--muted);transition:color .2s}
+.ft-links a:hover{color:var(--my-yellow)}
+.ft-bottom{max-width:1180px;margin:0 auto;border-top:1px solid var(--border);padding-top:1.8rem;
+display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;
+font-size:.79rem;color:var(--muted)}
+.ft-bottom a{color:var(--my-yellow)}
+.flag-dots{display:flex;gap:5px;align-items:center}
+.fd2{width:10px;height:10px;border-radius:50%}
+
+/* ── AUTH MODAL ── */
+.backdrop{display:none;position:fixed;inset:0;z-index:900;
+background:rgba(6,8,15,.9);backdrop-filter:blur(14px);
+align-items:center;justify-content:center}
+.backdrop.open{display:flex}
+.modal{background:var(--card2);border:1px solid var(--border2);border-radius:24px;
+width:100%;max-width:455px;padding:2.5rem;position:relative;margin:1rem;
+animation:popIn .35s cubic-bezier(.34,1.56,.64,1) both}
+@keyframes popIn{from{opacity:0;transform:scale(.92) translateY(24px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.modal::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;
+background:linear-gradient(90deg,var(--my-red),var(--my-blue),var(--my-yellow));
+border-radius:24px 24px 0 0}
+.modal-x{position:absolute;top:1.2rem;right:1.2rem;background:var(--card);
+border:1px solid var(--border);color:var(--muted);width:31px;height:31px;border-radius:8px;
+font-size:1.1rem;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.modal-x:hover{color:var(--text);border-color:var(--border2)}
+.modal-logo{display:flex;align-items:center;gap:9px;margin-bottom:1.8rem}
+.modal-lm{width:30px;height:30px;border-radius:8px;overflow:hidden;
+display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr}
+.modal-lm s{text-decoration:none}
+.modal-lm s:nth-child(1){background:var(--my-red)}
+.modal-lm s:nth-child(2){background:var(--my-blue)}
+.modal-lm s:nth-child(3){background:var(--my-yellow)}
+.modal-lm s:nth-child(4){background:rgba(255,255,255,.85)}
+.modal-ltxt{font-size:.95rem;font-weight:800}
+.modal-ltxt em{font-style:normal;color:var(--my-yellow)}
+.m-tabs{display:flex;background:var(--card);border-radius:11px;padding:4px;gap:4px;margin-bottom:1.7rem}
+.m-tab{flex:1;padding:9px;border-radius:8px;font-size:.84rem;font-weight:600;
+background:none;color:var(--muted);transition:all .2s}
+.m-tab.on{background:var(--card2);color:var(--text)}
+.fg{margin-bottom:1.1rem}
+.fg label{display:block;font-size:.74rem;font-weight:700;color:var(--muted);
+margin-bottom:5px;letter-spacing:.03em;text-transform:uppercase}
+.fg input,.fg select{width:100%;padding:11px 13px;border-radius:11px;font-size:.88rem;
+background:var(--card);border:1px solid var(--border);color:var(--text);
+outline:none;transition:all .2s;font-family:inherit;-webkit-appearance:none}
+.fg input:focus,.fg select:focus{border-color:var(--my-red);box-shadow:0 0 0 3px rgba(204,0,1,.1)}
+.fg input::placeholder{color:var(--muted)}
+.fg-row{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.forgot{display:block;text-align:right;font-size:.76rem;color:var(--my-yellow);margin-top:-6px;margin-bottom:1.1rem}
+.pass-bar{height:3px;background:var(--border);border-radius:3px;margin-top:5px;overflow:hidden}
+.pass-fill{height:100%;border-radius:3px;transition:all .3s;width:0}
+.pass-hint{font-size:.68rem;color:var(--muted);margin-top:4px}
+.submit-btn{width:100%;padding:13px;border-radius:12px;font-size:.94rem;font-weight:800;
+background:var(--my-red);color:#fff;transition:all .25s;margin-top:.4rem;
+box-shadow:0 4px 20px rgba(204,0,1,.3)}
+.submit-btn:hover{background:#e00001;transform:translateY(-1px);box-shadow:0 8px 32px rgba(204,0,1,.45)}
+.auth-div{display:flex;align-items:center;gap:.9rem;margin:1.3rem 0;font-size:.73rem;color:var(--muted)}
+.auth-div::before,.auth-div::after{content:'';flex:1;height:1px;background:var(--border)}
+.alt-btn{width:100%;padding:11px;border-radius:11px;font-size:.83rem;font-weight:600;
+background:var(--card);border:1px solid var(--border);color:var(--text);
+transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:8px}
+.alt-btn:hover{border-color:var(--border2);background:var(--bg3)}
+.terms{font-size:.72rem;color:var(--muted);text-align:center;margin-top:.9rem;line-height:1.55}
+.terms a{color:var(--my-yellow)}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:2rem;right:2rem;z-index:9999;
+background:var(--card2);border:1px solid var(--border2);border-radius:14px;padding:13px 18px;
+display:flex;align-items:center;gap:10px;font-size:.86rem;font-weight:500;
+box-shadow:0 12px 50px rgba(0,0,0,.55);
+transform:translateY(20px);opacity:0;transition:all .35s cubic-bezier(.34,1.56,.64,1);
+pointer-events:none;max-width:340px}
+.toast.show{transform:translateY(0);opacity:1;pointer-events:auto}
+.toast-bar{position:absolute;bottom:0;left:0;height:3px;background:var(--my-red);
+border-radius:0 0 14px 14px;width:100%;transform-origin:left;
+animation:shrink 3.5s linear forwards}
+@keyframes shrink{from{transform:scaleX(1)}to{transform:scaleX(0)}}
+
+/* ── SCROLL REVEAL ── */
+.rv{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease}
+.rv.in{opacity:1;transform:translateY(0)}
+.rv.d1{transition-delay:.1s}.rv.d2{transition-delay:.2s}.rv.d3{transition-delay:.3s}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── RESPONSIVE ── */
+@media(max-width:1024px){
+  .hero-inner{grid-template-columns:1fr;text-align:center}
+  .hero-copy{max-width:100%}
+  .hero-sub,.hero-stats{margin-left:auto;margin-right:auto}
+  .hero-actions{justify-content:center}
+  .hero-stats{justify-content:center}
+  .hero-visual{display:none}
+  .bento{grid-template-columns:1fr 1fr}
+  .bc.wide{grid-column:span 2}
+  .showcase{grid-template-columns:1fr;gap:3rem}
+  .showcase.alt{direction:ltr}
+  .ft-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:768px){
+  nav{padding:0 1.5rem}
+  .nav-links,.nav-r{display:none}
+  .hamburger{display:flex;align-items:center}
+  section{padding:5rem 1.5rem}
+  .showcase{padding:4rem 1.5rem}
+  .bento{grid-template-columns:1fr}
+  .bc.wide,.bc.tall{grid-column:auto;grid-row:auto}
+  .ft-grid{grid-template-columns:1fr}
+  .cta-stats{gap:2rem}
+  .fb{display:none}
+  .fg-row{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="logo">
+    <div class="logo-mark"><s></s><s></s><s></s><s></s></div>
+    Malaysia<em>Web3</em>
+  </div>
+  <ul class="nav-links">
+    <li><a href="airdrop.html">🪂 Airdrops</a></li>
+    <li><a href="defi.html">⚡ DeFi</a></li>
+    <li><a href="nft.html">🎨 NFT</a></li>
+    <li><a href="bitcoin.html">₿ Bitcoin</a></li>
+    <li><a href="altcoin.html">🚀 Altcoins</a></li>
+  </ul>
+  <div class="nav-r">
+    <button class="btn-ghost" onclick="openAuth('login')">Sign In</button>
+    <button class="btn-cta"   onclick="openAuth('signup')">Join Free 🇲🇾</button>
+  </div>
+  <button class="hamburger" onclick="toggleMob()">☰</button>
+</nav>
+
+<div class="mob-nav" id="mobNav">
+  <a href="airdrop.html" onclick="closeMob()">🪂 Airdrops</a>
+  <a href="defi.html"   onclick="closeMob()">⚡ DeFi</a>
+  <a href="nft.html"    onclick="closeMob()">🎨 NFT</a>
+  <a href="bitcoin.html" onclick="closeMob()">₿ Bitcoin</a>
+  <a href="altcoin.html" onclick="closeMob()">🚀 Altcoins</a>
+  <div class="mob-btns">
+    <button class="btn-ghost" style="width:100%" onclick="closeMob();openAuth('login')">Sign In</button>
+    <button class="btn-cta"   style="width:100%;padding:13px" onclick="closeMob();openAuth('signup')">Join Free 🇲🇾</button>
+  </div>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg">
+    <div class="orb orb-r"></div>
+    <div class="orb orb-b"></div>
+    <div class="orb orb-g"></div>
+  </div>
+  <div class="hero-grid"></div>
+  <div class="hero-stripes"></div>
+
+  <div class="hero-inner">
+    <div class="hero-copy">
+      <div class="hero-pill"><span class="pill-dot"></span>Malaysia's #1 Web3 Platform</div>
+      <h1 class="hero-h1">
+        Your home for<br>
+        <span class="red">crypto</span>,<br>
+        <span class="gold">NFTs</span> &amp; <span class="blue">blockchain</span>
+      </h1>
+      <p class="hero-sub">The definitive hub for Web3 in Malaysia — trade, learn, discover projects, and connect with the fastest-growing crypto community in Southeast Asia.</p>
+      <div class="hero-actions">
+        <button class="btn-primary" onclick="openAuth('signup')">Get Started Free →</button>
+        <button class="btn-outline" onclick="document.getElementById('ecosystem').scrollIntoView({behavior:'smooth'})">Explore Ecosystem</button>
+      </div>
+      <div class="hero-stats">
+        <div><div class="hs-n">42K+</div><div class="hs-l">Members</div></div>
+        <div><div class="hs-n">300+</div><div class="hs-l">Projects</div></div>
+        <div><div class="hs-n">120+</div><div class="hs-l">Events</div></div>
+        <div><div class="hs-n">RM 2B+</div><div class="hs-l">Volume Tracked</div></div>
+      </div>
+    </div>
+
+    <!-- Phone -->
+    <div class="hero-visual">
+      <div class="fb fb1"><span class="fd fd-g"></span>BTC +4.2% today</div>
+      <div class="fb fb2"><span class="fd fd-y"></span>42,190 members</div>
+      <div class="fb fb3"><span class="fd fd-r"></span>New: KL Summit 2025</div>
+      <div class="phone">
+        <div class="p-notch"></div>
+        <div class="p-screen">
+          <div class="p-head">
+            <span class="p-brand">MW3</span>
+            <div class="p-avatar"></div>
+          </div>
+          <div class="p-bal">
+            <div class="p-bal-lbl">Portfolio Value</div>
+            <div class="p-bal-amt">RM 18,430</div>
+            <div class="p-bal-sub">▲ +6.4% this week</div>
+          </div>
+          <div class="p-acts">
+            <div class="p-act"><div class="p-act-ico aic-r">↑</div><div class="p-act-lbl">Send</div></div>
+            <div class="p-act"><div class="p-act-ico aic-b">↓</div><div class="p-act-lbl">Receive</div></div>
+            <div class="p-act"><div class="p-act-ico aic-g">⇄</div><div class="p-act-lbl">Swap</div></div>
+            <div class="p-act"><div class="p-act-ico aic-w">⋯</div><div class="p-act-lbl">More</div></div>
+          </div>
+          <div class="p-div"></div>
+          <div class="p-assets">
+            <div class="p-assets-ttl">My Assets</div>
+            <div class="p-asset">
+              <div class="p-asset-l">
+                <div class="p-asset-ico" style="background:rgba(247,147,26,.18);color:#F7931A">₿</div>
+                <div><div class="p-asset-name">Bitcoin</div><div class="p-asset-qty">0.024 BTC</div></div>
+              </div>
+              <div style="text-align:right"><div class="p-asset-val">RM 10,588</div><div class="p-asset-chg up">+2.34%</div></div>
+            </div>
+            <div class="p-asset">
+              <div class="p-asset-l">
+                <div class="p-asset-ico" style="background:rgba(98,126,234,.18);color:#627EEA">Ξ</div>
+                <div><div class="p-asset-name">Ethereum</div><div class="p-asset-qty">0.41 ETH</div></div>
+              </div>
+              <div style="text-align:right"><div class="p-asset-val">RM 7,314</div><div class="p-asset-chg up">+1.12%</div></div>
+            </div>
+            <div class="p-asset">
+              <div class="p-asset-l">
+                <div class="p-asset-ico" style="background:rgba(20,168,0,.14);color:#14A800">◎</div>
+                <div><div class="p-asset-name">Solana</div><div class="p-asset-qty">0.68 SOL</div></div>
+              </div>
+              <div style="text-align:right"><div class="p-asset-val">RM 513</div><div class="p-asset-chg dn">-0.55%</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-inner" id="tickerEl"></div>
+</div>
+
+<!-- FEATURES -->
+<section id="features">
+  <div class="wrap">
+    <div class="rv">
+      <div class="sec-lbl">Platform Features</div>
+      <h2 class="sec-h2">Everything you need<br>to navigate <em>Web3</em></h2>
+    </div>
+      <div class="bento rv d1">
+      <a href="airdrop.html" class="bc tall cr" style="text-decoration:none;color:inherit;display:block">
+        <div class="b-ico r">📰</div>
+        <div class="b-num">Daily</div>
+        <div class="b-title">Real-Time News &amp; Airdrops</div>
+        <div class="b-desc">Curated blockchain news, market updates, regulatory alerts, and live airdrop tracker for Malaysia &amp; SEA.</div>
+        <span class="b-tag r">Live Updates</span>
+        <div class="mini-chart">
+          <svg viewBox="0 0 200 60" preserveAspectRatio="none">
+            <polyline points="0,50 30,40 55,45 80,25 110,30 135,15 160,20 190,5" fill="none" stroke="#CC0001" stroke-width="2" opacity=".8"/>
+            <polyline points="0,50 30,40 55,45 80,25 110,30 135,15 160,20 190,5 190,60 0,60" fill="rgba(204,0,1,.1)" stroke="none"/>
+          </svg>
+        </div>
+      </a>
+      <a href="altcoin.html" class="bc cb" style="text-decoration:none;color:inherit;display:block">
+        <div class="b-ico b">🗺️</div>
+        <div class="b-title">Ecosystem Map</div>
+        <div class="b-desc">Discover 300+ Web3 projects, DeFi protocols, and blockchain startups building in Malaysia.</div>
+        <span class="b-tag b">300+ Projects</span>
+      </a>
+      <a href="defi.html" class="bc cg" style="text-decoration:none;color:inherit;display:block">
+        <div class="b-num">42K</div>
+        <div class="b-title">Active Community Members</div>
+        <div class="b-desc">Join builders, investors, artists, and enthusiasts across Malaysia and SEA.</div>
+        <span class="b-tag g">Growing Daily</span>
+      </a>
+      <a href="airdrop.html" class="bc wide cb" style="text-decoration:none;color:inherit;display:block">
+        <div class="b-ico g">📅</div>
+        <div class="b-title">Events Calendar — Never Miss a Beat</div>
+        <div class="b-desc">Hackathons, conferences, meetups across KL, Penang, JB, and online. Filter by city, type, or date.</div>
+        <span class="b-tag gr">120+ Events Hosted</span>
+      </a>
+      <a href="nft.html" class="bc cg" style="text-decoration:none;color:inherit;display:block">
+        <div class="b-ico r">💎</div>
+        <div class="b-title">NFT Showcase</div>
+        <div class="b-desc">Discover NFT collections born in Malaysia — Ordinals to Ethereum PFPs.</div>
+        <span class="b-tag r">Local Artists</span>
+      </a>
+      <a href="defi.html" class="bc cr" style="text-decoration:none;color:inherit;display:block">
+        <div class="b-ico w">🎓</div>
+        <div class="b-title">Learning Hub</div>
+        <div class="b-desc">Free courses in English &amp; Bahasa Malaysia — from blockchain basics to Solidity.</div>
+        <span class="b-tag b">Free Access</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- NEWS -->
+<section id="news" style="background:var(--bg2);padding:0">
+  <div class="wrap">
+    <div class="showcase">
+      <div class="sc-copy rv">
+        <div class="sec-lbl">Latest News</div>
+        <h2 class="sec-h2">What's happening<br>in <em>Malaysian</em><br><span class="gold">Web3</span></h2>
+        <p class="sec-sub">Curated, relevant, always up to date — news that matters to the Malaysian crypto community.</p>
+        <a href="airdrop.html" class="sc-link">Airdrops &amp; News →</a>
+      </div>
+      <div class="sc-visual rv d2">
+        <div class="sc-card">
+          <div class="sc-card-hd">
+            <span class="sc-ttl">Top Stories</span>
+            <span class="sc-badge">● Live</span>
+          </div>
+          <div class="sc-news"><span class="sc-n-emoji">🏛️</span>
+            <div><div class="sc-n-cat">Regulation</div>
+              <div class="sc-n-hl">SC Malaysia releases new Digital Asset Framework for 2025</div>
+              <div class="sc-n-time">2 hours ago</div></div></div>
+          <div class="sc-news"><span class="sc-n-emoji">🖼️</span>
+            <div><div class="sc-n-cat">NFT</div>
+              <div class="sc-n-hl">Malaysian NFT artists break RM 10M in total global marketplace sales</div>
+              <div class="sc-n-time">4 hours ago</div></div></div>
+          <div class="sc-news"><span class="sc-n-emoji">⚡</span>
+            <div><div class="sc-n-cat">DeFi</div>
+              <div class="sc-n-hl">DeFi TVL in SEA hits new ATH — Malaysia leads at 34% growth</div>
+              <div class="sc-n-time">6 hours ago</div></div></div>
+          <div class="sc-news"><span class="sc-n-emoji">₿</span>
+            <div><div class="sc-n-cat">Bitcoin</div>
+              <div class="sc-n-hl">Ordinals gaining traction among Malaysian collector community</div>
+              <div class="sc-n-time">Yesterday</div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ECOSYSTEM -->
+<section id="ecosystem" style="padding:0">
+  <div class="wrap">
+    <div class="showcase alt">
+      <div class="sc-copy rv">
+        <div class="sec-lbl">Ecosystem</div>
+        <h2 class="sec-h2">Malaysia's <em>Web3</em><br>landscape<br><span class="gold">mapped</span></h2>
+        <p class="sec-sub">Explore DeFi protocols, NFT collections, DAOs, GameFi, and infrastructure built by or for Malaysians.</p>
+        <a href="altcoin.html" class="sc-link">Explore all projects →</a>
+      </div>
+      <div class="sc-visual rv d2">
+        <div class="sc-card">
+          <div class="sc-card-hd">
+            <span class="sc-ttl">Featured Projects</span>
+            <span class="sc-badge">300+ listed</span>
+          </div>
+          <div class="eco-mini">
+            <div class="em-card"><div class="em-ico">🌙</div><div class="em-name">LunaFi</div><div class="em-type">DEX</div><span class="em-tag">DeFi</span></div>
+            <div class="em-card"><div class="em-ico">🎨</div><div class="em-name">BatikNFT</div><div class="em-type">Cultural NFTs</div><span class="em-tag" style="background:rgba(204,0,1,.12);color:#FF7070">NFT</span></div>
+            <div class="em-card"><div class="em-ico">⛓️</div><div class="em-name">NusaChain</div><div class="em-type">Layer 1</div><span class="em-tag" style="background:rgba(255,204,0,.1);color:#FFCC00">Infra</span></div>
+            <div class="em-card"><div class="em-ico">⚔️</div><div class="em-name">DuelChain</div><div class="em-type">Play-to-Earn</div><span class="em-tag" style="background:rgba(34,197,94,.1);color:#4ADE80">GameFi</span></div>
+            <div class="em-card"><div class="em-ico">🏛️</div><div class="em-name">RinggitDAO</div><div class="em-type">Treasury DAO</div><span class="em-tag">DAO</span></div>
+            <div class="em-card"><div class="em-ico">📈</div><div class="em-name">MerdekaFi</div><div class="em-type">Yield Aggregator</div><span class="em-tag">DeFi</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EVENTS -->
+<section id="events" style="background:var(--bg2);padding:0">
+  <div class="wrap">
+    <div class="showcase">
+      <div class="sc-copy rv">
+        <div class="sec-lbl">Upcoming Events</div>
+        <h2 class="sec-h2">Meet, learn &amp;<br>build <em>together</em></h2>
+        <p class="sec-sub">From mega conferences to developer meetups — every Web3 event in Malaysia and online, in one place.</p>
+        <a href="airdrop.html" class="sc-link">See full calendar →</a>
+      </div>
+      <div class="sc-visual rv d2">
+        <div class="sc-card">
+          <div class="sc-card-hd">
+            <span class="sc-ttl">Jun — Aug 2025</span>
+            <span class="sc-badge" style="background:rgba(204,0,1,.12);color:#FF7070;border-color:rgba(204,0,1,.22)">5 upcoming</span>
+          </div>
+          <div class="ev-item">
+            <div class="ev-date"><div class="ev-day">22</div><div class="ev-mon">Jun</div></div>
+            <div><div class="ev-info-title">KL Web3 Summit 2025</div><div class="ev-info-meta">📍 KLCC · 2,000+ attendees · Conference</div></div>
+          </div>
+          <div class="ev-item">
+            <div class="ev-date"><div class="ev-day">05</div><div class="ev-mon">Jul</div></div>
+            <div><div class="ev-info-title">DeFi Deep Dive Hackathon</div><div class="ev-info-meta">📍 Cyberjaya · RM 50K prize pool</div></div>
+          </div>
+          <div class="ev-item">
+            <div class="ev-date"><div class="ev-day">12</div><div class="ev-mon">Jul</div></div>
+            <div><div class="ev-info-title">NFT Creators Meetup — Penang</div><div class="ev-info-meta">📍 Penang · Free entry · Meetup</div></div>
+          </div>
+          <div class="ev-item">
+            <div class="ev-date"><div class="ev-day">19</div><div class="ev-mon">Jul</div></div>
+            <div><div class="ev-info-title">Intro to Web3 Dev — Live Workshop</div><div class="ev-info-meta">🌐 Online · Open enrollment</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LEARN -->
+<section id="learn">
+  <div class="wrap">
+    <div class="rv">
+      <div class="sec-lbl">Learning Hub</div>
+      <h2 class="sec-h2">Start your <em>Web3</em><br>journey today</h2>
+      <p class="sec-sub">Free courses in English &amp; Bahasa Malaysia — from blockchain basics to advanced smart contracts.</p>
+    </div>
+    <div class="learn-grid">
+      <a href="bitcoin.html" class="lc lc-r rv d1" style="text-decoration:none;color:inherit;display:block"><div class="lc-ico">🧱</div><span class="lc-lvl lv-beg">Beginner</span>
+        <div class="lc-title">Blockchain 101</div>
+        <div class="lc-desc">Understand how blockchain works — consensus, nodes, and cryptography explained simply.</div>
+        <div class="lc-foot"><span class="lc-lessons">8 lessons · 2h 30m</span><div class="lc-arr">→</div></div></a>
+      <a href="defi.html" class="lc lc-b rv d2" style="text-decoration:none;color:inherit;display:block"><div class="lc-ico">💰</div><span class="lc-lvl lv-beg">Beginner</span>
+        <div class="lc-title">DeFi Starter Guide</div>
+        <div class="lc-desc">Wallets, DEXes, liquidity pools, and yield farming — your complete DeFi roadmap.</div>
+        <div class="lc-foot"><span class="lc-lessons">12 lessons · 4h</span><div class="lc-arr">→</div></div></a>
+      <a href="nft.html" class="lc lc-g rv d3" style="text-decoration:none;color:inherit;display:block"><div class="lc-ico">🎨</div><span class="lc-lvl lv-int">Intermediate</span>
+        <div class="lc-title">Creating &amp; Selling NFTs</div>
+        <div class="lc-desc">From digital art to PFP collections — mint, list, and market your NFTs globally.</div>
+        <div class="lc-foot"><span class="lc-lessons">10 lessons · 3h 15m</span><div class="lc-arr">→</div></div></a>
+      <a href="defi.html" class="lc lc-r rv d1" style="text-decoration:none;color:inherit;display:block"><div class="lc-ico">📜</div><span class="lc-lvl lv-int">Intermediate</span>
+        <div class="lc-title">Smart Contracts with Solidity</div>
+        <div class="lc-desc">Build and deploy your first smart contracts on Ethereum with hands-on exercises.</div>
+        <div class="lc-foot"><span class="lc-lessons">16 lessons · 6h</span><div class="lc-arr">→</div></div></a>
+      <a href="altcoin.html" class="lc lc-b rv d2" style="text-decoration:none;color:inherit;display:block"><div class="lc-ico">🏛️</div><span class="lc-lvl lv-beg">Beginner</span>
+        <div class="lc-title">Crypto &amp; Malaysian Law</div>
+        <div class="lc-desc">Navigate SC Malaysia guidelines, tax obligations, and legal considerations for crypto.</div>
+        <div class="lc-foot"><span class="lc-lessons">6 lessons · 1h 45m</span><div class="lc-arr">→</div></div></a>
+      <a href="airdrop.html" class="lc lc-g rv d3" style="text-decoration:none;color:inherit;display:block"><div class="lc-ico">🔐</div><span class="lc-lvl lv-adv">Advanced</span>
+        <div class="lc-title">Web3 Security Masterclass</div>
+        <div class="lc-desc">Audit smart contracts, avoid rug pulls, identify phishing, and secure your multi-sig.</div>
+        <div class="lc-foot"><span class="lc-lessons">20 lessons · 8h</span><div class="lc-arr">→</div></div></a>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cta">
+  <div class="cta-orbs">
+    <div class="cta-or cta-or-r"></div>
+    <div class="cta-or cta-or-b"></div>
+    <div class="cta-or cta-or-g"></div>
+  </div>
+  <div class="cta-inner rv">
+    <div class="cta-flag">🇲🇾</div>
+    <h2 class="cta-h2">Be part of Malaysia's<br><em>Web3</em> revolution</h2>
+    <p class="cta-sub">Join 42,000+ members getting exclusive alpha drops, early event access, job opportunities, and connecting with the brightest minds in Malaysian blockchain.</p>
+    <div class="cta-btns">
+      <button class="btn-primary" onclick="openAuth('signup')">Create Free Account →</button>
+      <a href="altcoin.html" class="btn-outline" style="display:inline-flex;align-items:center">Explore the Platform</a>
+    </div>
+    <div class="cta-stats">
+      <div><div class="cs-n">42K+</div><div class="cs-l">Members</div></div>
+      <div><div class="cs-n">300+</div><div class="cs-l">Projects Listed</div></div>
+      <div><div class="cs-n">RM 2B+</div><div class="cs-l">Volume Tracked</div></div>
+      <div><div class="cs-n">120+</div><div class="cs-l">Events Hosted</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="ft-grid">
+    <div class="ft-brand">
+      <div class="logo"><div class="logo-mark"><s></s><s></s><s></s><s></s></div>Malaysia<em style="font-style:normal;color:var(--my-yellow)">Web3</em></div>
+      <p>Malaysia's leading hub for Web3 education, news, community, and ecosystem discovery. Building the bridge between traditional finance and the decentralised future.</p>
+      <div class="ft-socials">
+        <a href="#" title="Twitter">𝕏</a><a href="#" title="Telegram">✈</a>
+        <a href="#" title="Discord">⚡</a><a href="#" title="LinkedIn">in</a><a href="#" title="YouTube">▶</a>
+      </div>
+    </div>
+    <div><div class="ft-col-h">Explore</div>
+      <ul class="ft-links">
+        <li><a href="airdrop.html">🪂 Airdrops</a></li>
+        <li><a href="defi.html">⚡ DeFi</a></li>
+        <li><a href="nft.html">🎨 NFT</a></li>
+        <li><a href="bitcoin.html">₿ Bitcoin</a></li>
+        <li><a href="altcoin.html">🚀 Altcoins</a></li>
+      </ul></div>
+    <div><div class="ft-col-h">Community</div>
+      <ul class="ft-links"><li><a href="#">Forum</a></li><li><a href="#">Telegram Group</a></li>
+        <li><a href="#">Discord Server</a></li><li><a href="#">Newsletter</a></li><li><a href="#">Submit a Project</a></li></ul></div>
+    <div><div class="ft-col-h">Company</div>
+      <ul class="ft-links"><li><a href="#">About Us</a></li><li><a href="#">Advertise</a></li>
+        <li><a href="#">Privacy Policy</a></li><li><a href="#">Terms of Use</a></li><li><a href="#">Contact</a></li></ul></div>
+  </div>
+  <div class="ft-bottom">
+    <span>© 2025 Malaysia Web3. All rights reserved.</span>
+    <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+      <div class="flag-dots">
+        <div class="fd2" style="background:#CC0001"></div>
+        <div class="fd2" style="background:#fff;border:1px solid #333"></div>
+        <div class="fd2" style="background:#003893"></div>
+        <div class="fd2" style="background:#FFCC00"></div>
+      </div>
+      <span>Made with ❤️ in Malaysia 🇲🇾</span>
+      <a href="#">Privacy</a><a href="#">Terms</a>
+    </div>
+  </div>
+</footer>
+
+<!-- AUTH MODAL -->
+<div class="backdrop" id="backdrop" onclick="bgClose(event)">
+  <div class="modal">
+    <button class="modal-x" onclick="closeAuth()">×</button>
+    <div class="modal-logo">
+      <div class="modal-lm"><s></s><s></s><s></s><s></s></div>
+      <span class="modal-ltxt">Malaysia<em>Web3</em></span>
+    </div>
+    <div class="m-tabs">
+      <button class="m-tab" id="tl" onclick="sw('login')">Sign In</button>
+      <button class="m-tab" id="ts" onclick="sw('signup')">Create Account</button>
+    </div>
+
+    <!-- LOGIN -->
+    <div id="fl">
+      <div class="fg"><label>Email Address</label><input type="email" placeholder="you@example.com"></div>
+      <div class="fg"><label>Password</label><input type="password" placeholder="Your password"></div>
+      <a href="#" class="forgot">Forgot password?</a>
+      <button class="submit-btn" onclick="doLogin()">Sign In to MalaysiaWeb3</button>
+      <div class="auth-div">or continue with</div>
+      <button class="alt-btn" onclick="doWallet()">🦊 Connect Web3 Wallet (MetaMask / WalletConnect)</button>
+      <button class="alt-btn"><span style="font-weight:900;color:#4285F4">G</span>&ensp;Continue with Google</button>
+    </div>
+
+    <!-- SIGNUP -->
+    <div id="fs" style="display:none">
+      <div class="fg-row">
+        <div class="fg"><label>First Name</label><input type="text" placeholder="Ahmad"></div>
+        <div class="fg"><label>Last Name</label><input type="text" placeholder="Razif"></div>
+      </div>
+      <div class="fg"><label>Email Address</label><input type="email" placeholder="you@example.com"></div>
+      <div class="fg"><label>Username</label><input type="text" placeholder="@cryptoninja_my"></div>
+      <div class="fg">
+        <label>Password</label>
+        <input type="password" placeholder="Min. 8 characters" oninput="pwStr(this)">
+        <div class="pass-bar"><div class="pass-fill" id="pf"></div></div>
+        <div class="pass-hint" id="ph">Use 8+ characters with letters, numbers &amp; symbols</div>
+      </div>
+      <div class="fg"><label>I'm most interested in</label>
+        <select><option value="">Select your focus area…</option>
+          <option>DeFi &amp; Yield Farming</option><option>NFT &amp; Digital Art</option>
+          <option>Blockchain Development</option><option>Crypto Trading &amp; Investment</option>
+          <option>GameFi &amp; Metaverse</option><option>Web3 Startups &amp; Venture Capital</option>
+          <option>General Interest / Learning</option></select></div>
+      <button class="submit-btn" onclick="doSignup()">Create Free Account 🇲🇾</button>
+      <div class="auth-div">or sign up with</div>
+      <button class="alt-btn" onclick="doWallet()">🦊 Connect Web3 Wallet</button>
+      <p class="terms">By creating an account you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</p>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <span id="ti">✅</span><span id="tm">Done!</span>
+  <div class="toast-bar" id="tb"></div>
+</div>
+
+<script>
+/* TICKER */
+const tData=[
+  {s:'BTC',p:'RM 441,230',c:'+2.34%',u:1},{s:'ETH',p:'RM 17,840',c:'+1.12%',u:1},
+  {s:'BNB',p:'RM 2,780',c:'-0.55%',u:0},{s:'SOL',p:'RM 755',c:'+3.21%',u:1},
+  {s:'XRP',p:'RM 2.34',c:'+0.88%',u:1},{s:'DOGE',p:'RM 0.87',c:'-1.22%',u:0},
+  {s:'MATIC',p:'RM 3.15',c:'+4.10%',u:1},{s:'ADA',p:'RM 2.07',c:'-0.33%',u:0},
+  {s:'AVAX',p:'RM 178',c:'+1.67%',u:1},{s:'LINK',p:'RM 68.40',c:'+2.88%',u:1},
+];
+const mkT=a=>a.map(t=>`<span class="ti"><span class="sym">${t.s}</span>${t.p}<span class="${t.u?'up':'dn'}">${t.c}</span></span><span class="ti-sep">·</span>`).join('');
+document.getElementById('tickerEl').innerHTML=mkT(tData)+mkT(tData);
+
+/* SCROLL REVEAL */
+const rvEls=document.querySelectorAll('.rv');
+const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');obs.unobserve(e.target)}})},{threshold:.12});
+rvEls.forEach(e=>obs.observe(e));
+
+/* NAV scroll */
+window.addEventListener('scroll',()=>{
+  document.getElementById('nav').style.background=window.scrollY>60?'rgba(6,8,15,.96)':'rgba(6,8,15,.75)';
+});
+
+/* MOBILE NAV */
+function toggleMob(){document.getElementById('mobNav').classList.toggle('open')}
+function closeMob(){document.getElementById('mobNav').classList.remove('open')}
+
+/* AUTH */
+function openAuth(tab){document.getElementById('backdrop').classList.add('open');sw(tab);document.body.style.overflow='hidden'}
+function closeAuth(){document.getElementById('backdrop').classList.remove('open');document.body.style.overflow=''}
+function bgClose(e){if(e.target===document.getElementById('backdrop'))closeAuth()}
+function sw(tab){
+  document.getElementById('tl').classList.toggle('on',tab==='login');
+  document.getElementById('ts').classList.toggle('on',tab==='signup');
+  document.getElementById('fl').style.display=tab==='login'?'block':'none';
+  document.getElementById('fs').style.display=tab==='signup'?'block':'none';
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeAuth()});
+function doLogin(){closeAuth();showToast('✅','Welcome back! Signed in to MalaysiaWeb3.')}
+function doSignup(){closeAuth();showToast('🎉','Account created! Welcome to the community 🇲🇾')}
+function doWallet(){closeAuth();showToast('🦊','Web3 wallet connected successfully!')}
+
+/* PASSWORD STRENGTH */
+function pwStr(inp){
+  const v=inp.value,pf=document.getElementById('pf'),ph=document.getElementById('ph');
+  let s=0;
+  if(v.length>=8)s++;if(/[0-9]/.test(v))s++;if(/[!@#$%^&*]/.test(v))s++;
+  const cols=['#EF4444','#F59E0B','#22C55E'],lbls=['Weak — add numbers or symbols','Good — add a symbol to strengthen','Strong password ✓'],ws=['33%','66%','100%'];
+  if(!v.length){pf.style.width='0';ph.textContent='Use 8+ characters with letters, numbers & symbols';ph.style.color='var(--muted)';return}
+  const i=Math.max(0,s-1);
+  pf.style.width=ws[i];pf.style.background=cols[i];ph.textContent=lbls[i];ph.style.color=cols[i];
+}
+
+/* TOAST */
+let ttm;
+function showToast(icon,msg){
+  const t=document.getElementById('toast');
+  document.getElementById('ti').textContent=icon;
+  document.getElementById('tm').textContent=msg;
+  const tb=document.getElementById('tb');
+  tb.style.animation='none';tb.offsetHeight;tb.style.animation='shrink 3.5s linear forwards';
+  t.classList.add('show');
+  clearTimeout(ttm);ttm=setTimeout(()=>t.classList.remove('show'),3500);
+}
+</script>
+</body>
+</html>

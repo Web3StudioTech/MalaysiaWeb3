@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bitcoin Hub — Malaysia Web3</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+.ph-orb-1{width:700px;height:700px;background:radial-gradient(circle,rgba(247,147,26,.18) 0%,transparent 65%);top:-200px;left:-150px}
+.ph-orb-2{width:500px;height:500px;background:radial-gradient(circle,rgba(204,0,1,.1) 0%,transparent 65%);bottom:-100px;right:-80px}
+.btc-orange{color:#F7931A}
+.btc-gradient{background:linear-gradient(135deg,#F7931A,#FFB347);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+
+/* ECOSYSTEM MAP */
+.eco-map{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.2rem;margin-top:2rem}
+.eco-layer{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:1.8rem;
+position:relative;overflow:hidden;transition:all .3s}
+.eco-layer:hover{border-color:var(--border2);transform:translateY(-2px)}
+.eco-layer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.eco-layer.l1::before{background:linear-gradient(90deg,#F7931A,#FFB347)}
+.eco-layer.l2::before{background:linear-gradient(90deg,var(--blue),#5B8FE8)}
+.eco-layer.ln::before{background:linear-gradient(90deg,#FFD700,#FFA500)}
+.eco-layer.ord::before{background:linear-gradient(90deg,var(--red),#FF6B6B)}
+.eco-layer.rgb::before{background:linear-gradient(90deg,#A855F7,#7C3AED)}
+.eco-layer.st::before{background:linear-gradient(90deg,#4ADE80,#16A34A)}
+.el-badge{display:inline-flex;align-items:center;gap:6px;margin-bottom:1rem;padding:4px 12px;
+border-radius:100px;font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em}
+.el-badge.b1{background:rgba(247,147,26,.12);color:#F7931A;border:1px solid rgba(247,147,26,.2)}
+.el-badge.b2{background:rgba(0,56,147,.15);color:#7EAEF7;border:1px solid rgba(0,56,147,.25)}
+.el-badge.b3{background:rgba(255,215,0,.1);color:#FFD700;border:1px solid rgba(255,215,0,.2)}
+.el-badge.b4{background:rgba(204,0,1,.12);color:#FF7070;border:1px solid rgba(204,0,1,.2)}
+.el-badge.b5{background:rgba(168,85,247,.12);color:#C084FC;border:1px solid rgba(168,85,247,.2)}
+.el-badge.b6{background:rgba(74,222,128,.1);color:#4ADE80;border:1px solid rgba(74,222,128,.2)}
+.el-title{font-size:1.1rem;font-weight:700;margin-bottom:.5rem;letter-spacing:-.02em}
+.el-desc{font-size:.83rem;color:var(--muted);line-height:1.68}
+.el-pills{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:1rem}
+.el-pill{font-size:.66rem;font-weight:600;padding:3px 9px;border-radius:100px;
+background:var(--bg3);border:1px solid var(--border);color:var(--muted)}
+
+/* BTC PRICE TICKER */
+.btc-ticker{background:linear-gradient(135deg,rgba(247,147,26,.08),rgba(204,0,1,.04));
+border:1px solid rgba(247,147,26,.15);border-radius:16px;padding:1.4rem 1.8rem;
+display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;margin-bottom:2.5rem}
+.btp-item .v{font-size:1.4rem;font-weight:800;color:#F7931A;letter-spacing:-.03em}
+.btp-item .l{font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-top:2px}
+
+/* ORDINALS SECTION */
+.ord-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:.9rem;margin-top:1.5rem}
+.ord-item{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;
+cursor:pointer;transition:all .3s}
+.ord-item:hover{border-color:rgba(247,147,26,.3);transform:translateY(-3px)}
+.ord-img{height:130px;display:flex;align-items:center;justify-content:center;font-size:3rem;
+background:var(--bg3)}
+.ord-body{padding:.9rem}
+.ord-num{font-size:.65rem;color:var(--muted);margin-bottom:2px}
+.ord-name{font-size:.82rem;font-weight:700}
+.ord-price{font-size:.75rem;color:#F7931A;margin-top:3px}
+
+/* L2 PROJECTS */
+.l2-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem;margin-top:1.5rem}
+
+/* TIMELINE */
+.timeline{position:relative;padding-left:2rem;margin-top:2rem}
+.timeline::before{content:'';position:absolute;left:.6rem;top:0;bottom:0;width:1.5px;background:var(--border)}
+.tl-item{position:relative;margin-bottom:2rem;padding-left:1.5rem}
+.tl-item::before{content:'';position:absolute;left:-1.35rem;top:.4rem;width:10px;height:10px;
+border-radius:50%;background:#F7931A;box-shadow:0 0 8px rgba(247,147,26,.5)}
+.tl-year{font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#F7931A;margin-bottom:.3rem}
+.tl-title{font-size:.95rem;font-weight:700;margin-bottom:.3rem}
+.tl-desc{font-size:.8rem;color:var(--muted);line-height:1.6}
+
+/* RGB / STAMPS INFO */
+.proto-detail{background:var(--card);border:1px solid var(--border);border-radius:18px;overflow:hidden;margin-bottom:1rem}
+.pd-header{padding:1.4rem 1.8rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:.8rem}
+.pd-icon{font-size:1.4rem}
+.pd-title{font-size:1rem;font-weight:700}
+.pd-sub{font-size:.75rem;color:var(--muted);margin-top:1px}
+.pd-body{padding:1.4rem 1.8rem}
+.pd-body p{font-size:.83rem;color:var(--muted);line-height:1.7;margin-bottom:.8rem}
+.pd-body p:last-child{margin-bottom:0}
+</style>
+</head>
+<body>
+<nav id="nav">
+  <a href="index.html" class="logo"><div class="logo-mark"><s></s><s></s><s></s><s></s></div>Malaysia<em>Web3</em></a>
+  <ul class="nav-links">
+    <li><a href="airdrop.html">Airdrops</a></li><li><a href="defi.html">DeFi</a></li>
+    <li><a href="nft.html">NFT</a></li><li><a href="bitcoin.html" class="active">Bitcoin</a></li><li><a href="altcoin.html">Altcoins</a></li>
+  </ul>
+  <div class="nav-r"><button class="btn-ghost">Sign In</button><button class="btn-cta">Join Free 🇲🇾</button></div>
+  <button class="hamburger" onclick="document.getElementById('mob').classList.toggle('open')">☰</button>
+</nav>
+<div class="mob-nav" id="mob">
+  <a href="airdrop.html">🪂 Airdrops</a><a href="defi.html">⚡ DeFi</a><a href="nft.html">🎨 NFT</a><a href="bitcoin.html">₿ Bitcoin</a><a href="altcoin.html">🚀 Altcoins</a>
+  <div class="mob-btns"><button class="btn-ghost" style="width:100%">Sign In</button><button class="btn-cta" style="width:100%;padding:11px">Join Free 🇲🇾</button></div>
+</div>
+
+<div class="page-hero">
+  <div class="ph-orb ph-orb-1"></div><div class="ph-orb ph-orb-2"></div>
+  <div class="page-hero-inner">
+    <div class="page-hero-lbl">₿ Bitcoin Hub</div>
+    <h1 class="page-hero-h1"><span class="btc-gradient">Bitcoin</span> —<br>beyond just<br><em style="color:var(--gold)">digital gold</em></h1>
+    <p class="page-hero-sub">Bitcoin is the original cryptocurrency — but its ecosystem has exploded far beyond simple transactions. Lightning Network, Ordinals, RGB Protocol, Bitcoin Stamps, and a new wave of L2s are building the future on the most secure blockchain ever created.</p>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:2rem">
+      <a href="#ecosystem" class="btn-primary" style="background:#F7931A;box-shadow:0 4px 24px rgba(247,147,26,.35)">Explore Ecosystem →</a>
+      <a href="#ordinals" class="btn-outline">₿ Bitcoin Ordinals</a>
+    </div>
+  </div>
+</div>
+
+<!-- LIVE STATS -->
+<section class="sec" style="padding-top:3rem;padding-bottom:2rem">
+  <div class="wrap">
+    <div class="btc-ticker rv">
+      <div class="btp-item"><div class="v" id="btc-price">RM 441,230</div><div class="l">Bitcoin Price</div></div>
+      <div class="btp-item"><div class="v">21,000,000</div><div class="l">Max Supply</div></div>
+      <div class="btp-item"><div class="v">~19.75M</div><div class="l">Circulating</div></div>
+      <div class="btp-item"><div class="v">~2029</div><div class="l">Next Halving Est.</div></div>
+      <div class="btp-item"><div class="v">850K+</div><div class="l">Active Nodes</div></div>
+      <div class="btp-item"><div class="v">51M+</div><div class="l">Ordinal Inscriptions</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ECOSYSTEM MAP -->
+<section class="sec sec-alt" id="ecosystem">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="sec-lbl">Bitcoin Ecosystem</div>
+      <h2 class="sec-h2">The complete <span class="btc-gradient">Bitcoin</span> stack</h2>
+      <p class="sec-sub">Bitcoin isn't just Layer 1 anymore. From Lightning payments to RGB smart contracts, a thriving ecosystem is being built on the world's most decentralised blockchain.</p>
+    </div>
+    <div class="eco-map">
+      <div class="eco-layer l1 rv d1">
+        <span class="el-badge b1">₿ Layer 1</span>
+        <div class="el-title">Bitcoin Base Layer</div>
+        <div class="el-desc">The original — 15 years of unbroken security. Proof of Work consensus, 21M hard cap, 10-minute blocks. The settlement layer for all Bitcoin value.</div>
+        <div class="el-pills"><span class="el-pill">SHA-256 PoW</span><span class="el-pill">UTXO Model</span><span class="el-pill">Taproot</span><span class="el-pill">SegWit</span></div>
+      </div>
+      <div class="eco-layer ln rv d2">
+        <span class="el-badge b3">⚡ Layer 2</span>
+        <div class="el-title">Lightning Network</div>
+        <div class="el-desc">Instant, near-zero fee Bitcoin payments via bidirectional payment channels. 1M+ channels, $200M+ capacity. Powers microtransactions and remittances globally — including Malaysia.</div>
+        <div class="el-pills"><span class="el-pill">Payment Channels</span><span class="el-pill">HTLC</span><span class="el-pill">Sub-second txns</span><span class="el-pill">LNURL</span></div>
+      </div>
+      <div class="eco-layer ord rv d3">
+        <span class="el-badge b4">🖼️ Ordinals</span>
+        <div class="el-title">Bitcoin Ordinals</div>
+        <div class="el-desc">Inscribe arbitrary data (images, video, code) directly onto individual satoshis using SegWit witness data. No separate token — NFTs live on Bitcoin itself. 51M+ inscriptions and counting.</div>
+        <div class="el-pills"><span class="el-pill">Sat Numbering</span><span class="el-pill">Inscription</span><span class="el-pill">BRC-20</span><span class="el-pill">Runes</span></div>
+      </div>
+      <div class="eco-layer rgb rv d1">
+        <span class="el-badge b5">🌈 RGB Protocol</span>
+        <div class="el-title">RGB Smart Contracts</div>
+        <div class="el-desc">Client-side validated smart contracts on Bitcoin and Lightning. Enables programmable money, NFTs, and complex contracts without bloating the blockchain. Privacy-first by design.</div>
+        <div class="el-pills"><span class="el-pill">Client-Side Validation</span><span class="el-pill">AluVM</span><span class="el-pill">Stash</span><span class="el-pill">Consignment</span></div>
+      </div>
+      <div class="eco-layer st rv d2">
+        <span class="el-badge b6">🔖 Stamps</span>
+        <div class="el-title">Bitcoin Stamps</div>
+        <div class="el-desc">Store image data in Bitcoin transaction outputs (UTXO set) using the SRC-20 standard. Unlike Ordinals, stamps cannot be pruned from full nodes — permanent, immutable, truly forever on-chain.</div>
+        <div class="el-pills"><span class="el-pill">UTXO Storage</span><span class="el-pill">SRC-20</span><span class="el-pill">Unprunable</span><span class="el-pill">Base64</span></div>
+      </div>
+      <div class="eco-layer l2 rv d3">
+        <span class="el-badge b2">🔷 Bitcoin L2s</span>
+        <div class="el-title">Bitcoin Layer 2 Projects</div>
+        <div class="el-desc">Stacks, Rootstock, Merlin Chain, BOB, and more — bringing smart contracts, DeFi, and EVM compatibility to Bitcoin security without touching the base layer.</div>
+        <div class="el-pills"><span class="el-pill">Stacks</span><span class="el-pill">Rootstock</span><span class="el-pill">BOB</span><span class="el-pill">Merlin</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LIGHTNING NETWORK -->
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="sec-lbl">Lightning Network</div>
+      <h2 class="sec-h2">Bitcoin at the <em>speed of light</em></h2>
+      <p class="sec-sub">The Lightning Network makes Bitcoin practical for everyday payments — instant settlement, fractions of a cent in fees, and privacy-preserving routing.</p>
+    </div>
+    <div class="grid-3">
+      <a href="https://phoenix.acinq.co" target="_blank" class="lnk-card rv d1"><div class="lnk-icon">🌪️</div><div><div class="lnk-name">Phoenix Wallet</div><div class="lnk-desc">Best self-custodial Lightning wallet. Automatic channel management, LNURL support, splicing.</div><span class="tag tag-g" style="margin-top:.5rem">Self-Custodial</span></div><div class="lnk-arrow">↗</div></a>
+      <a href="https://breez.technology" target="_blank" class="lnk-card rv d2"><div class="lnk-icon">💨</div><div><div class="lnk-name">Breez Wallet</div><div class="lnk-desc">Non-custodial Lightning wallet with built-in podcast app and point-of-sale. Malaysian merchants can use this.</div></div><div class="lnk-arrow">↗</div></a>
+      <a href="https://wallet.mutinywallet.com" target="_blank" class="lnk-card rv d3"><div class="lnk-icon">⚡</div><div><div class="lnk-name">Mutiny Wallet</div><div class="lnk-desc">Privacy-focused browser-based Lightning wallet. No accounts, no KYC. WebLN support.</div></div><div class="lnk-arrow">↗</div></a>
+      <a href="https://strike.me" target="_blank" class="lnk-card rv d1"><div class="lnk-icon">⚡</div><div><div class="lnk-name">Strike</div><div class="lnk-desc">Lightning payments platform enabling global remittances via Bitcoin. Used for cross-border RM transfers.</div></div><div class="lnk-arrow">↗</div></a>
+      <a href="https://voltage.cloud" target="_blank" class="lnk-card rv d2"><div class="lnk-icon">🔋</div><div><div class="lnk-name">Voltage Cloud</div><div class="lnk-desc">Managed Lightning node infrastructure. Run your own routing node without the technical overhead.</div></div><div class="lnk-arrow">↗</div></a>
+      <a href="https://amboss.space" target="_blank" class="lnk-card rv d3"><div class="lnk-icon">🔬</div><div><div class="lnk-name">Amboss</div><div class="lnk-desc">Lightning Network explorer and channel management analytics. Find the best peers for routing nodes.</div></div><div class="lnk-arrow">↗</div></a>
+    </div>
+  </div>
+</section>
+
+<!-- ORDINALS -->
+<section class="sec sec-alt" id="ordinals">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="sec-lbl">Bitcoin Ordinals</div>
+      <h2 class="sec-h2">NFTs on the most <em>secure</em> blockchain</h2>
+      <p class="sec-sub">Ordinals theory assigns a serial number to every satoshi and allows inscribing data directly onto them using Bitcoin's SegWit witness data — creating immutable, Bitcoin-native digital artifacts.</p>
+    </div>
+    <div class="grid-2 rv d1" style="margin-bottom:2rem">
+      <div class="proto-detail">
+        <div class="pd-header"><div class="pd-icon">🔢</div><div><div class="pd-title">Ordinal Theory</div><div class="pd-sub">Casey Rodarmor, 2023</div></div></div>
+        <div class="pd-body"><p>Every satoshi (0.00000001 BTC) is numbered in the order it was mined. This numbering allows tracking individual sats as they move through transactions. Rare sats (first mined in an epoch, block, etc.) have collector value.</p><p>Inscriptions embed arbitrary content — images, HTML, JavaScript, video — into a sat's witness data. The inscription is stored on-chain forever, on Bitcoin's base layer, with no external dependencies.</p></div>
+      </div>
+      <div class="proto-detail">
+        <div class="pd-header"><div class="pd-icon">🪙</div><div><div class="pd-title">BRC-20 & Runes</div><div class="pd-sub">Token Standards on Bitcoin</div></div></div>
+        <div class="pd-body"><p>BRC-20 uses JSON inscriptions to define fungible tokens on Bitcoin. Experimental but has produced billions in trading volume. Tokens like ORDI and SATS have multi-billion market caps.</p><p>Runes (by Casey Rodarmor) is a cleaner fungible token standard that stores balances in the UTXO set. Launched at the 2024 halving block — designed to replace BRC-20 with a more efficient model.</p></div>
+      </div>
+    </div>
+
+    <!-- Featured Ordinal Collections -->
+    <div class="sec-lbl rv" style="margin-bottom:1rem">Featured Ordinal Collections</div>
+    <div class="ord-grid">
+      <div class="ord-item rv d1"><div class="ord-img" style="background:linear-gradient(135deg,#1a0a00,#3d1a00)">₿</div><div class="ord-body"><div class="ord-num">#0 – #9</div><div class="ord-name">Genesis Inscriptions</div><div class="ord-price">Priceless</div></div></div>
+      <div class="ord-item rv d2"><div class="ord-img" style="background:linear-gradient(135deg,#0d0d0d,#1a1a1a)">💎</div><div class="ord-body"><div class="ord-num">Bitcoin Puppets</div><div class="ord-name">BTC Puppet #4421</div><div class="ord-price">0.18 BTC</div></div></div>
+      <div class="ord-item rv d3"><div class="ord-img" style="background:linear-gradient(135deg,#1a0505,#3d0505)">🐱</div><div class="ord-body"><div class="ord-num">NodeMonkes</div><div class="ord-name">NodeMonke #7821</div><div class="ord-price">0.12 BTC</div></div></div>
+      <div class="ord-item rv d1"><div class="ord-img" style="background:linear-gradient(135deg,#050A1F,#0A1540)">🖼️</div><div class="ord-body"><div class="ord-num">PixelQuote</div><div class="ord-name">Quote #42 🇲🇾</div><div class="ord-price">Sub-100K</div></div></div>
+      <div class="ord-item rv d2"><div class="ord-img" style="background:linear-gradient(135deg,#0d1a0d,#1a2e1a)">🐕</div><div class="ord-body"><div class="ord-num">DoginalsFepe</div><div class="ord-name">Fepe #84K–95K 🇲🇾</div><div class="ord-price">Sub-100K Range</div></div></div>
+    </div>
+
+    <div style="margin-top:2rem">
+      <div class="sec-lbl rv" style="margin-bottom:1rem">Ordinals Tools & Explorers</div>
+      <div class="lnk-grid rv d1">
+        <a href="https://ordinals.com" target="_blank" class="lnk-card"><div class="lnk-icon">🔍</div><div><div class="lnk-name">Ordinals.com</div><div class="lnk-desc">Official Bitcoin inscription explorer by Casey Rodarmor. Browse by inscription number, sat rarity.</div></div><div class="lnk-arrow">↗</div></a>
+        <a href="https://unisat.io" target="_blank" class="lnk-card"><div class="lnk-icon">⚡</div><div><div class="lnk-name">UniSat Wallet</div><div class="lnk-desc">Most popular Bitcoin Ordinals wallet. Send inscriptions, BRC-20 tokens, and browse marketplace.</div></div><div class="lnk-arrow">↗</div></a>
+        <a href="https://magiceden.io/ordinals" target="_blank" class="lnk-card"><div class="lnk-icon">🪄</div><div><div class="lnk-name">Magic Eden Ordinals</div><div class="lnk-desc">Largest Ordinals marketplace. Trade inscriptions, Runes, BRC-20. Malaysian collections listed here.</div></div><div class="lnk-arrow">↗</div></a>
+        <a href="https://xverse.app" target="_blank" class="lnk-card"><div class="lnk-icon">✖️</div><div><div class="lnk-name">Xverse Wallet</div><div class="lnk-desc">Bitcoin wallet supporting Ordinals, BRC-20, Runes, Stacks, and Lightning in one place.</div></div><div class="lnk-arrow">↗</div></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RGB + STAMPS -->
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="sec-lbl">Advanced Bitcoin Tech</div>
+      <h2 class="sec-h2">RGB Protocol &amp; <em>Bitcoin Stamps</em></h2>
+    </div>
+    <div class="grid-2">
+      <div class="rv d1">
+        <div class="proto-detail" style="margin-bottom:1rem">
+          <div class="pd-header"><div class="pd-icon">🌈</div><div><div class="pd-title">RGB Protocol</div><div class="pd-sub">Client-Side Smart Contracts on Bitcoin + Lightning</div></div></div>
+          <div class="pd-body">
+            <p>RGB is a smart contract system that uses Bitcoin and Lightning as a settlement and transport layer. Unlike Ethereum, validation happens client-side — only the parties involved know the contract state. This makes RGB extremely private and scalable.</p>
+            <p>RGB supports fungible tokens (RGB20), non-fungible assets (RGB21), and complex programmable contracts through its AluVM virtual machine. Assets can be sent over Lightning Network channels with instant finality.</p>
+            <p>Use cases: issuing stablecoins on Bitcoin, private NFTs, decentralised identity, tokenised securities — all without smart contract risk visible on-chain.</p>
+          </div>
+        </div>
+        <div class="lnk-grid" style="grid-template-columns:1fr">
+          <a href="https://rgb.tech" target="_blank" class="lnk-card"><div class="lnk-icon">🌈</div><div><div class="lnk-name">RGB.tech</div><div class="lnk-desc">Official RGB protocol documentation and developer resources.</div></div><div class="lnk-arrow">↗</div></a>
+          <a href="https://bitlight.tech" target="_blank" class="lnk-card"><div class="lnk-icon">⚡</div><div><div class="lnk-name">Bitlight Labs</div><div class="lnk-desc">RGB wallet and tools. Transfer assets over the Lightning Network.</div></div><div class="lnk-arrow">↗</div></a>
+        </div>
+      </div>
+      <div class="rv d2">
+        <div class="proto-detail" style="margin-bottom:1rem">
+          <div class="pd-header"><div class="pd-icon">🔖</div><div><div class="pd-title">Bitcoin Stamps (SRC-20)</div><div class="pd-sub">Immutable on-chain data storage</div></div></div>
+          <div class="pd-body">
+            <p>Bitcoin Stamps use the UTXO set (transaction outputs) to store data, rather than the witness data used by Ordinals. The key difference: UTXO data cannot be pruned by full nodes, making Stamps truly permanent — even if a node runs in pruned mode.</p>
+            <p>The SRC-20 token standard (analogous to BRC-20 for Ordinals) allows creating fungible tokens with Stamps. KEVIN, STAMP, and PEPE are among the most traded SRC-20 tokens.</p>
+            <p>Stamp images are encoded in Base64 and embedded across transaction outputs. They're typically smaller files due to UTXO size constraints — making them distinct pixel-art style collectibles.</p>
+          </div>
+        </div>
+        <div class="lnk-grid" style="grid-template-columns:1fr">
+          <a href="https://stampchain.io" target="_blank" class="lnk-card"><div class="lnk-icon">🔖</div><div><div class="lnk-name">Stampchain.io</div><div class="lnk-desc">Bitcoin Stamps explorer and minting interface. Browse all SRC-20 tokens and stamp NFTs.</div></div><div class="lnk-arrow">↗</div></a>
+          <a href="https://stampedwallet.io" target="_blank" class="lnk-card"><div class="lnk-icon">💼</div><div><div class="lnk-name">Stamped Wallet</div><div class="lnk-desc">Wallet for Bitcoin Stamps. Store, send, and display your SRC-20 tokens and stamp art.</div></div><div class="lnk-arrow">↗</div></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BITCOIN L2s -->
+<section class="sec sec-alt">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="sec-lbl">Bitcoin Layer 2</div>
+      <h2 class="sec-h2">Smart contracts secured by <em>Bitcoin</em></h2>
+      <p class="sec-sub">A new generation of L2s brings DeFi, NFTs, and programmability to Bitcoin — without changing the base layer.</p>
+    </div>
+    <div class="l2-grid">
+      <a href="https://stacks.co" target="_blank" class="lnk-card rv d1"><div class="lnk-icon">🔷</div><div><div class="lnk-name">Stacks</div><div class="lnk-desc">Bitcoin L2 with Clarity smart contracts. sBTC lets you use real BTC in Stacks DeFi. Largest Bitcoin L2 ecosystem.</div><span class="tag tag-b" style="margin-top:.5rem">Mature</span></div><div class="lnk-arrow">↗</div></a>
+      <a href="https://rootstock.io" target="_blank" class="lnk-card rv d2"><div class="lnk-icon">🌱</div><div><div class="lnk-name">Rootstock (RSK)</div><div class="lnk-desc">EVM-compatible Bitcoin sidechain. Merge-mined with Bitcoin. Supports Solidity contracts secured by Bitcoin hashpower.</div><span class="tag tag-gr" style="margin-top:.5rem">EVM Compatible</span></div><div class="lnk-arrow">↗</div></a>
+      <a href="https://gobob.xyz" target="_blank" class="lnk-card rv d3"><div class="lnk-icon">🔴</div><div><div class="lnk-name">BOB (Build on Bitcoin)</div><div class="lnk-desc">EVM L2 with Bitcoin light clients. Bridges BTC, Ordinals, and BRC-20 to an Optimism-based chain. Fastest-growing BTC L2.</div><span class="tag tag-or" style="margin-top:.5rem">Fastest Growing</span></div><div class="lnk-arrow">↗</div></a>
+      <a href="https://merlinchain.io" target="_blank" class="lnk-card rv d1"><div class="lnk-icon">🧙</div><div><div class="lnk-name">Merlin Chain</div><div class="lnk-desc">ZK rollup Bitcoin L2 with deep Ordinals integration. High TPS, EVM support. Very active DeFi ecosystem.</div><span class="tag tag-pu" style="margin-top:.5rem">ZK Rollup</span></div><div class="lnk-arrow">↗</div></a>
+      <a href="https://lightninglabs.co/taproot-assets" target="_blank" class="lnk-card rv d2"><div class="lnk-icon">⚡</div><div><div class="lnk-name">Taproot Assets</div><div class="lnk-desc">Issue assets on Bitcoin Taproot, transfer over Lightning. Stablecoins and tokens with Lightning-speed settlement.</div><span class="tag tag-g" style="margin-top:.5rem">Lightning Native</span></div><div class="lnk-arrow">↗</div></a>
+      <a href="https://citrea.xyz" target="_blank" class="lnk-card rv d3"><div class="lnk-icon">🏙️</div><div><div class="lnk-name">Citrea</div><div class="lnk-desc">First ZK rollup that uses Bitcoin for data availability. EVM-compatible, settling proofs to Bitcoin L1.</div><span class="tag tag-b" style="margin-top:.5rem">ZK + Bitcoin DA</span></div><div class="lnk-arrow">↗</div></a>
+    </div>
+  </div>
+</section>
+
+<!-- TIMELINE -->
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="sec-lbl">Bitcoin History</div>
+      <h2 class="sec-h2">From Satoshi to <em>global ecosystem</em></h2>
+    </div>
+    <div class="timeline rv">
+      <div class="tl-item"><div class="tl-year">2008</div><div class="tl-title">Bitcoin Whitepaper</div><div class="tl-desc">Satoshi Nakamoto publishes "Bitcoin: A Peer-to-Peer Electronic Cash System" on Halloween. The birth of the entire crypto industry.</div></div>
+      <div class="tl-item"><div class="tl-year">2009</div><div class="tl-title">Genesis Block Mined</div><div class="tl-desc">Block 0 mined on 3 January 2009 with the message: "The Times 03/Jan/2009 Chancellor on brink of second bailout for banks."</div></div>
+      <div class="tl-item"><div class="tl-year">2017</div><div class="tl-title">Lightning Network &amp; SegWit</div><div class="tl-desc">Segregated Witness (SegWit) activates, enabling Lightning Network. Scalability solutions begin shipping.</div></div>
+      <div class="tl-item"><div class="tl-year">2021</div><div class="tl-title">Taproot Upgrade</div><div class="tl-desc">Bitcoin's most significant upgrade in years. Enables Schnorr signatures, MAST, and sets the foundation for Ordinals and RGB Protocol.</div></div>
+      <div class="tl-item"><div class="tl-year">2023</div><div class="tl-title">Ordinals &amp; BRC-20 Explosion</div><div class="tl-desc">Casey Rodarmor launches Ordinal theory. Inscriptions hit 10M within months. BRC-20 tokens create billions in trading volume. Bitcoin's NFT moment.</div></div>
+      <div class="tl-item"><div class="tl-year">2024</div><div class="tl-title">4th Halving &amp; Runes Launch</div><div class="tl-desc">Block reward drops to 3.125 BTC. Runes protocol launches at the halving block. Bitcoin ETF approvals by SEC bring institutional capital.</div></div>
+      <div class="tl-item"><div class="tl-year">2025+</div><div class="tl-title">Bitcoin L2 Wars</div><div class="tl-desc">Stacks sBTC, BOB, Merlin, Citrea, Taproot Assets — the race to bring DeFi to Bitcoin security is on. Malaysia's builder community is joining.</div></div>
+    </div>
+  </div>
+</section>
+
+<footer class="foot">
+  <a href="index.html" class="foot-logo"><div class="logo-mark"><s></s><s></s><s></s><s></s></div>Malaysia<em style="font-style:normal;color:var(--gold)">Web3</em></a>
+  <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+    <div class="flag-dots"><div class="fd" style="background:#CC0001"></div><div class="fd" style="background:#fff;border:1px solid #333"></div><div class="fd" style="background:#003893"></div><div class="fd" style="background:#FFCC00"></div></div>
+    <span>Made with ❤️ in Malaysia 🇲🇾</span><a href="#">Privacy</a> · <a href="#">Terms</a>
+  </div>
+</footer>
+
+<script>
+window.addEventListener('scroll',()=>{document.getElementById('nav').style.background=window.scrollY>60?'rgba(6,8,15,.96)':'rgba(6,8,15,.8)'});
+const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');obs.unobserve(e.target)}})},{threshold:.1});
+document.querySelectorAll('.rv').forEach(e=>obs.observe(e));
+</script>
+</body>
+</html>

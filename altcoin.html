@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Altcoin Hub — Malaysia Web3</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+.ph-orb-1{width:650px;height:650px;background:radial-gradient(circle,rgba(204,0,1,.15) 0%,transparent 65%);top:-200px;right:-100px}
+.ph-orb-2{width:500px;height:500px;background:radial-gradient(circle,rgba(0,56,147,.15) 0%,transparent 65%);bottom:-100px;left:-80px}
+
+/* COIN TICKER */
+.live-ticker{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:.8rem;margin-top:2rem}
+.lt-coin{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.2rem;
+transition:all .3s;cursor:pointer}
+.lt-coin:hover{border-color:var(--border2);transform:translateY(-2px)}
+.lt-top{display:flex;align-items:center;gap:.6rem;margin-bottom:.8rem}
+.lt-ico{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+font-size:.85rem;font-weight:800;flex-shrink:0}
+.lt-sym{font-size:.85rem;font-weight:800}
+.lt-name{font-size:.68rem;color:var(--muted)}
+.lt-price{font-size:1.1rem;font-weight:800;letter-spacing:-.02em;margin-bottom:.3rem}
+.lt-chg{font-size:.78rem;font-weight:700}
+.lt-mcap{font-size:.65rem;color:var(--muted);margin-top:.2rem}
+.up{color:#4ADE80}.dn{color:#EF4444}
+
+/* CATEGORY FILTER */
+.cat-filter{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:2rem}
+.cf-btn{padding:7px 18px;border-radius:100px;font-size:.8rem;font-weight:600;
+background:transparent;border:1px solid var(--border);color:var(--muted);transition:all .2s}
+.cf-btn:hover,.cf-btn.on{background:rgba(204,0,1,.1);border-color:rgba(204,0,1,.25);color:#FF7070}
+
+/* ALTCOIN CARDS */
+.alt-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.1rem}
+.alt-card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:1.7rem;
+transition:all .3s;position:relative;overflow:hidden}
+.alt-card:hover{border-color:var(--border2);transform:translateY(-3px)}
+.alt-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;
+transform:scaleX(0);transition:transform .3s;transform-origin:left}
+.alt-card:hover::after{transform:scaleX(1)}
+.alt-card.ac-eth::after{background:linear-gradient(90deg,#627EEA,#8A9EEA)}
+.alt-card.ac-sol::after{background:linear-gradient(90deg,#9945FF,#14F195)}
+.alt-card.ac-bnb::after{background:linear-gradient(90deg,#F0B90B,#FFD400)}
+.alt-card.ac-matic::after{background:linear-gradient(90deg,#8247E5,#A97BF0)}
+.alt-card.ac-avax::after{background:linear-gradient(90deg,#E84142,#FF6B6B)}
+.alt-card.ac-dot::after{background:linear-gradient(90deg,#E6007A,#FF4DB2)}
+.alt-card.ac-ada::after{background:linear-gradient(90deg,#0033AD,#3366FF)}
+.alt-card.ac-link::after{background:linear-gradient(90deg,#375BD2,#6B8CE8)}
+.alt-card.ac-arb::after{background:linear-gradient(90deg,#1B4ADD,#4D7AFF)}
+.alt-card.ac-op::after{background:linear-gradient(90deg,#FF0420,#FF6B7A)}
+.alt-card.ac-sui::after{background:linear-gradient(90deg,#4DA2FF,#90C9FF)}
+.alt-card.ac-apt::after{background:linear-gradient(90deg,#00C2FF,#00FFCC)}
+.alt-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1rem}
+.alt-left{display:flex;align-items:center;gap:.8rem}
+.alt-logo{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.1rem;font-weight:800;flex-shrink:0;background:var(--bg3)}
+.alt-coin-name{font-size:.95rem;font-weight:700}
+.alt-coin-sym{font-size:.72rem;color:var(--muted);margin-top:1px}
+.alt-price-col{text-align:right}
+.alt-price{font-size:1.05rem;font-weight:800;letter-spacing:-.02em}
+.alt-chg-badge{display:inline-block;padding:3px 8px;border-radius:100px;font-size:.68rem;font-weight:700;margin-top:3px}
+.alt-chg-badge.up{background:rgba(74,222,128,.1);color:#4ADE80}
+.alt-chg-badge.dn{background:rgba(239,68,68,.1);color:#F87171}
+.alt-desc{font-size:.8rem;color:var(--muted);line-height:1.65;margin-bottom:1rem}
+.alt-stats{display:flex;gap:1.2rem;flex-wrap:wrap;margin-bottom:.9rem}
+.as-item .v{font-size:.82rem;font-weight:700}
+.as-item .l{font-size:.62rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.alt-tags{display:flex;gap:.4rem;flex-wrap:wrap}
+
+/* COMPARISON TABLE */
+.comp-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:16px;margin-top:2rem}
+.comp-table{width:100%;border-collapse:collapse;font-size:.82rem;min-width:700px}
+.comp-table th{padding:.8rem 1rem;text-align:left;font-size:.66rem;font-weight:800;
+text-transform:uppercase;letter-spacing:.08em;color:var(--muted);border-bottom:1px solid var(--border);
+background:var(--bg3);white-space:nowrap}
+.comp-table td{padding:.85rem 1rem;border-bottom:1px solid var(--border);vertical-align:middle}
+.comp-table tr:last-child td{border-bottom:none}
+.comp-table tr:hover td{background:rgba(255,255,255,.015)}
+.cn{display:flex;align-items:center;gap:7px;font-weight:700}
+.ci{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:800;flex-shrink:0;background:var(--bg3)}
+
+/* EXCHANGE SECTION */
+.exch-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem;margin-top:1.5rem}
+.exch-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.5rem;
+transition:all .3s;text-decoration:none;color:var(--text);display:block}
+.exch-card:hover{border-color:var(--border2);transform:translateY(-2px)}
+.exch-top{display:flex;align-items:center;gap:.8rem;margin-bottom:.8rem}
+.exch-logo{width:42px;height:42px;border-radius:12px;font-size:1.1rem;
+display:flex;align-items:center;justify-content:center;background:var(--bg3)}
+.exch-name{font-size:.93rem;font-weight:700}
+.exch-type{font-size:.7rem;color:var(--muted);margin-top:1px}
+.exch-desc{font-size:.78rem;color:var(--muted);line-height:1.6;margin-bottom:.8rem}
+.exch-fees{font-size:.72rem;font-weight:600;color:var(--gold)}
+
+/* INVESTMENT NOTE */
+.inv-note{background:rgba(204,0,1,.06);border:1px solid rgba(204,0,1,.15);border-radius:14px;padding:1.4rem 1.6rem;margin-bottom:2rem}
+.inv-note h3{font-size:.9rem;font-weight:700;color:#FF7070;margin-bottom:.5rem}
+.inv-note p{font-size:.8rem;color:var(--muted);line-height:1.65}
+</style>
+</head>
+<body>
+<nav id="nav">
+  <a href="index.html" class="logo"><div class="logo-mark"><s></s><s></s><s></s><s></s></div>Malaysia<em>Web3</em></a>
+  <ul class="nav-links">
+    <li><a href="airdrop.html">Airdrops</a></li><li><a href="defi.html">DeFi</a></li>
+    <li><a href="nft.html">NFT</a></li><li><a href="bitcoin.html">Bitcoin</a></li><li><a href="altcoin.html" class="active">Altcoins</a></li>
+  </ul>
+  <div class="nav-r"><button class="btn-ghost">Sign In</button><button class="btn-cta">Join Free 🇲🇾</button></div>
+  <button class="hamburger" onclick="document.getElementById('mob').classList.toggle('open')">☰</button>
+</nav>
+<div class="mob-nav" id="mob">
+  <a href="airdrop.html">🪂 Airdrops</a><a href="defi.html">⚡ DeFi</a><a href="nft.html">🎨 NFT</a><a href="bitcoin.html">₿ Bitcoin</a><a href="altcoin.html">🚀 Altcoins</a>
+  <div class="mob-btns"><button class="btn-ghost" style="width:100%">Sign In</button><button class="btn-cta" style="width:100%;padding:11px">Join Free 🇲🇾</button></div>
+</div>
+
+<div class="page-hero">
+  <div class="ph-orb ph-orb-1"></div><div class="ph-orb ph-orb-2"></div>
+  <div class="page-hero-inner">
+    <div class="page-hero-lbl">🚀 Altcoin Hub</div>
+    <h1 class="page-hero-h1">Explore the<br><em style="color:var(--red)">altcoin</em> universe —<br><span style="color:var(--gold)">beyond Bitcoin</span></h1>
+    <p class="page-hero-sub">Altcoins — any cryptocurrency that isn't Bitcoin — power smart contracts, DeFi, gaming, AI, and more. Discover the leading projects, understand what makes each unique, and find where to trade them safely from Malaysia.</p>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:2rem">
+      <a href="#coins" class="btn-primary">🔍 Explore Coins</a>
+      <a href="#exchanges" class="btn-outline">🏪 Malaysian Exchanges</a>
+    </div>
+  </div>
+</div>
+
+<!-- LIVE PRICES -->
+<section class="sec" style="padding-top:3rem;padding-bottom:2rem">
+  <div class="wrap">
+    <div class="sec-lbl rv" style="margin-bottom:1rem">Live Prices (RM)</div>
+    <div class="inv-note rv">
+      <h3>⚠️ Investment Risk Disclaimer</h3>
+      <p>Altcoins are highly speculative and can lose 90%+ of their value. This page is educational information only — not financial advice. Malaysian investors are governed by SC Malaysia guidelines. Always invest only what you can afford to lose completely. Consult a licensed financial advisor before making investment decisions.</p>
+    </div>
+    <div class="live-ticker" id="priceTicker"></div>
+  </div>
+</section>
+
+<!-- ALTCOIN OVERVIEW -->
+<section class="sec sec-alt" id="coins">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="sec-lbl">Top Altcoins</div>
+      <h2 class="sec-h2">Know what you're <em>investing</em> in</h2>
+      <p class="sec-sub">Understanding a project's purpose, technology, and tokenomics is the foundation of any investment decision. DYOR — Do Your Own Research.</p>
+    </div>
+    <div class="cat-filter rv">
+      <button class="cf-btn on" onclick="filterAlts('all',this)">All</button>
+      <button class="cf-btn" onclick="filterAlts('L1',this)">Layer 1</button>
+      <button class="cf-btn" onclick="filterAlts('L2',this)">Layer 2</button>
+      <button class="cf-btn" onclick="filterAlts('DeFi',this)">DeFi</button>
+      <button class="cf-btn" onclick="filterAlts('AI',this)">AI</button>
+      <button class="cf-btn" onclick="filterAlts('Gaming',this)">GameFi</button>
+    </div>
+    <div class="alt-grid" id="altGrid"></div>
+  </div>
+</section>
+
+<!-- COMPARISON TABLE -->
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="sec-lbl">Side-by-Side Comparison</div>
+      <h2 class="sec-h2">Top <em>L1s</em> compared</h2>
+    </div>
+    <div class="comp-wrap rv d1">
+      <table class="comp-table">
+        <thead>
+          <tr><th>Network</th><th>TPS</th><th>Consensus</th><th>Finality</th><th>Smart Contracts</th><th>Ecosystem</th><th>Notable DApps</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><div class="cn"><div class="ci" style="background:rgba(98,126,234,.2);color:#627EEA">Ξ</div>Ethereum</div></td><td>~30 (L1)</td><td>Proof of Stake</td><td>~15 min</td><td>Solidity / Vyper</td><td>⭐⭐⭐⭐⭐</td><td>Uniswap, Aave, OpenSea</td></tr>
+          <tr><td><div class="cn"><div class="ci" style="background:rgba(153,69,255,.2);color:#9945FF">◎</div>Solana</div></td><td>65,000+</td><td>PoH + PoS</td><td>~400ms</td><td>Rust / Anchor</td><td>⭐⭐⭐⭐</td><td>Raydium, Magic Eden, Tensor</td></tr>
+          <tr><td><div class="cn"><div class="ci" style="background:rgba(240,185,11,.2);color:#F0B90B">B</div>BNB Chain</div></td><td>2,000+</td><td>PoSA</td><td>~3s</td><td>Solidity (EVM)</td><td>⭐⭐⭐⭐</td><td>PancakeSwap, Venus, Alpaca</td></tr>
+          <tr><td><div class="cn"><div class="ci" style="background:rgba(130,71,229,.2);color:#8247E5">▲</div>Polygon</div></td><td>7,000+</td><td>PoS + zkEVM</td><td>~2s</td><td>Solidity (EVM)</td><td>⭐⭐⭐⭐</td><td>QuickSwap, Lens Protocol</td></tr>
+          <tr><td><div class="cn"><div class="ci" style="background:rgba(232,65,66,.2);color:#E84142">A</div>Avalanche</div></td><td>4,500+</td><td>Avalanche PoS</td><td>~1–2s</td><td>Solidity (EVM)</td><td>⭐⭐⭐</td><td>Trader Joe, Benqi, GMXV2</td></tr>
+          <tr><td><div class="cn"><div class="ci" style="background:rgba(77,162,255,.2);color:#4DA2FF">S</div>Sui</div></td><td>297,000+</td><td>Delegated PoS</td><td>~480ms</td><td>Move</td><td>⭐⭐⭐</td><td>Cetus, Turbos, Aftermath</td></tr>
+          <tr><td><div class="cn"><div class="ci" style="background:rgba(0,194,255,.2);color:#00C2FF">A</div>Aptos</div></td><td>160,000+</td><td>AptosBFT PoS</td><td>~1s</td><td>Move</td><td>⭐⭐</td><td>PancakeSwap, Liquidswap</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- EXCHANGES -->
+<section class="sec sec-alt" id="exchanges">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="sec-lbl">Where to Buy</div>
+      <h2 class="sec-h2">Malaysian-friendly <em>exchanges</em></h2>
+      <p class="sec-sub">Buy altcoins using Ringgit Malaysia. These exchanges support MYR deposits via FPX or bank transfer and are registered or accessible from Malaysia.</p>
+    </div>
+    <div style="margin-bottom:2rem">
+      <div style="font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:.9rem;padding-bottom:.4rem;border-bottom:1px solid var(--border)" class="rv">🇲🇾 SC Malaysia Registered / Supported</div>
+      <div class="exch-grid">
+        <a href="https://luno.com/my" target="_blank" class="exch-card rv d1">
+          <div class="exch-top"><div class="exch-logo">🌕</div><div><div class="exch-name">Luno Malaysia</div><div class="exch-type">SC Malaysia Registered</div></div></div>
+          <p class="exch-desc">Most popular local exchange. Buy BTC, ETH, XRP, LTC, BCH with MYR via FPX. Best for beginners. Mobile-first UX.</p>
+          <div class="exch-fees">Maker 0% / Taker 0.1% &nbsp;·&nbsp; MYR FPX ✓</div>
+        </a>
+        <a href="https://mxglobal.com.my" target="_blank" class="exch-card rv d2">
+          <div class="exch-top"><div class="exch-logo">📊</div><div><div class="exch-name">MX Global</div><div class="exch-type">SC Malaysia Registered</div></div></div>
+          <p class="exch-desc">Malaysian regulated exchange with MYR trading pairs. Broader altcoin selection than Luno. Supports MYR deposits.</p>
+          <div class="exch-fees">Taker 0.2% &nbsp;·&nbsp; MYR FPX ✓</div>
+        </a>
+        <a href="https://tokenize.exchange" target="_blank" class="exch-card rv d3">
+          <div class="exch-top"><div class="exch-logo">💱</div><div><div class="exch-name">Tokenize Exchange</div><div class="exch-type">SC Malaysia Registered</div></div></div>
+          <p class="exch-desc">Malaysian-founded DAX. Wide altcoin selection, staking services, and fiat on-ramp via Malaysian banks.</p>
+          <div class="exch-fees">Taker 0.1% &nbsp;·&nbsp; MYR Bank Transfer ✓</div>
+        </a>
+      </div>
+    </div>
+    <div>
+      <div style="font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:.9rem;padding-bottom:.4rem;border-bottom:1px solid var(--border)" class="rv">🌏 Global Exchanges (Accessible from Malaysia)</div>
+      <div class="exch-grid">
+        <a href="https://binance.com" target="_blank" class="exch-card rv d1">
+          <div class="exch-top"><div class="exch-logo">🔶</div><div><div class="exch-name">Binance</div><div class="exch-type">World's Largest by Volume</div></div></div>
+          <p class="exch-desc">600+ trading pairs. Deepest liquidity globally. Earn, staking, futures, NFTs all in one. Use P2P to on/off-ramp MYR.</p>
+          <div class="exch-fees">Maker 0.1% / Taker 0.1% &nbsp;·&nbsp; P2P MYR ✓</div>
+        </a>
+        <a href="https://bybit.com" target="_blank" class="exch-card rv d2">
+          <div class="exch-top"><div class="exch-logo">📈</div><div><div class="exch-name">Bybit</div><div class="exch-type">Top 3 Global Exchange</div></div></div>
+          <p class="exch-desc">Strong spot + derivatives exchange. Launchpad for new altcoins. Web3 wallet built-in. Good for intermediate traders.</p>
+          <div class="exch-fees">Maker 0.1% / Taker 0.1% &nbsp;·&nbsp; P2P MYR ✓</div>
+        </a>
+        <a href="https://okx.com" target="_blank" class="exch-card rv d3">
+          <div class="exch-top"><div class="exch-logo">⭕</div><div><div class="exch-name">OKX</div><div class="exch-type">Integrated Web3 Exchange</div></div></div>
+          <p class="exch-desc">Best Web3 wallet integration on a CEX. DEX aggregator, NFT marketplace, and 350+ tokens. Launchpad for early access.</p>
+          <div class="exch-fees">Maker 0.08% / Taker 0.1% &nbsp;·&nbsp; P2P MYR ✓</div>
+        </a>
+        <a href="https://kucoin.com" target="_blank" class="exch-card rv d1">
+          <div class="exch-top"><div class="exch-logo">🦁</div><div><div class="exch-name">KuCoin</div><div class="exch-type">The People's Exchange</div></div></div>
+          <p class="exch-desc">Best for early-stage altcoins. 700+ trading pairs, many low-cap gems list here first. P2P MYR available.</p>
+          <div class="exch-fees">Maker 0.1% / Taker 0.1% &nbsp;·&nbsp; P2P MYR ✓</div>
+        </a>
+        <a href="https://app.hyperliquid.xyz" target="_blank" class="exch-card rv d2">
+          <div class="exch-top"><div class="exch-logo">💧</div><div><div class="exch-name">Hyperliquid</div><div class="exch-type">On-Chain Perp DEX</div></div></div>
+          <p class="exch-desc">Best decentralised perpetuals exchange. No KYC, non-custodial, CEX-level liquidity. Also HYPE airdrop veterans.</p>
+          <div class="exch-fees">Maker 0% / Taker 0.035% &nbsp;·&nbsp; USDC only</div>
+        </a>
+        <a href="https://app.uniswap.org" target="_blank" class="exch-card rv d3">
+          <div class="exch-top"><div class="exch-logo">🦄</div><div><div class="exch-name">Uniswap</div><div class="exch-type">Largest Ethereum DEX</div></div></div>
+          <p class="exch-desc">Swap any ERC-20 token permissionlessly. Access new altcoins before CEX listing. Connect MetaMask, no account needed.</p>
+          <div class="exch-fees">0.05%–1% depending on pool &nbsp;·&nbsp; Self-custody</div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PORTFOLIO BUILDER -->
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="sec-lbl">Research Tools</div>
+      <h2 class="sec-h2">Essential <em>DYOR</em> resources</h2>
+    </div>
+    <div class="grid-3">
+      <a href="https://coingecko.com" target="_blank" class="lnk-card rv d1"><div class="lnk-icon">🦎</div><div><div class="lnk-name">CoinGecko</div><div class="lnk-desc">Most comprehensive crypto data. Prices, market caps, trading volumes, developer activity, and community scores for 10,000+ coins.</div></div><div class="lnk-arrow">↗</div></a>
+      <a href="https://coinmarketcap.com" target="_blank" class="lnk-card rv d2"><div class="lnk-icon">📊</div><div><div class="lnk-name">CoinMarketCap</div><div class="lnk-desc">Industry standard market data. Detailed tokenomics, exchange listings, historical data, and portfolio tracker.</div></div><div class="lnk-arrow">↗</div></a>
+      <a href="https://messari.io" target="_blank" class="lnk-card rv d3"><div class="lnk-icon">🔬</div><div><div class="lnk-name">Messari</div><div class="lnk-desc">Institutional-grade crypto research. Detailed asset profiles, on-chain analytics, and market intelligence reports.</div></div><div class="lnk-arrow">↗</div></a>
+      <a href="https://defillama.com" target="_blank" class="lnk-card rv d1"><div class="lnk-icon">🦙</div><div><div class="lnk-name">DeFiLlama</div><div class="lnk-desc">Track TVL (Total Value Locked) across all DeFi protocols. Best tool for evaluating protocol health and ecosystem size.</div></div><div class="lnk-arrow">↗</div></a>
+      <a href="https://dappradar.com" target="_blank" class="lnk-card rv d2"><div class="lnk-icon">📡</div><div><div class="lnk-name">DappRadar</div><div class="lnk-desc">Track dApp usage metrics — unique wallets, transactions, and volume. See which protocols have real users.</div></div><div class="lnk-arrow">↗</div></a>
+      <a href="https://alternative.me/crypto/fear-and-greed-index" target="_blank" class="lnk-card rv d3"><div class="lnk-icon">😨</div><div><div class="lnk-name">Fear & Greed Index</div><div class="lnk-desc">Market sentiment indicator. Extreme fear = potential buy zone. Extreme greed = consider taking profits.</div></div><div class="lnk-arrow">↗</div></a>
+    </div>
+  </div>
+</section>
+
+<footer class="foot">
+  <a href="index.html" class="foot-logo"><div class="logo-mark"><s></s><s></s><s></s><s></s></div>Malaysia<em style="font-style:normal;color:var(--gold)">Web3</em></a>
+  <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+    <div class="flag-dots"><div class="fd" style="background:#CC0001"></div><div class="fd" style="background:#fff;border:1px solid #333"></div><div class="fd" style="background:#003893"></div><div class="fd" style="background:#FFCC00"></div></div>
+    <span>Made with ❤️ in Malaysia 🇲🇾</span><a href="#">Privacy</a> · <a href="#">Terms</a>
+  </div>
+</footer>
+
+<script>
+window.addEventListener('scroll',()=>{document.getElementById('nav').style.background=window.scrollY>60?'rgba(6,8,15,.96)':'rgba(6,8,15,.8)'});
+const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');obs.unobserve(e.target)}})},{threshold:.1});
+document.querySelectorAll('.rv').forEach(e=>obs.observe(e));
+
+// COINS DATA
+const coins=[
+  {sym:'ETH',name:'Ethereum',price:'RM 17,840',priceN:17840,chg:'+1.12',up:true,mcap:'RM 2.1T',ico:'Ξ',bg:'rgba(98,126,234,.2)',col:'#627EEA',cat:['L1','DeFi'],
+   desc:'The world\'s leading smart contract platform. Ethereum powers 80% of all DeFi TVL, the largest NFT ecosystem, and hundreds of L2 networks.',
+   tags:['Smart Contracts','EVM','PoS','L2 Hub'],card:'ac-eth',
+   stats:[{v:'~30 L1 TPS',l:'Throughput'},{v:'$60B+',l:'TVL'},{v:'4,000+',l:'DApps'}]},
+  {sym:'SOL',name:'Solana',price:'RM 753',priceN:753,chg:'+3.21',up:true,mcap:'RM 340B',ico:'◎',bg:'rgba(153,69,255,.2)',col:'#9945FF',cat:['L1'],
+   desc:'High-throughput blockchain with 65K+ TPS and sub-second finality. Home to Phantom wallet, Jupiter DEX, and the fastest-growing NFT ecosystem.',
+   tags:['65K TPS','Low Fees','Proof of History','Rust'],card:'ac-sol',
+   stats:[{v:'65,000+',l:'TPS'},{v:'$8B+',l:'TVL'},{v:'400ms',l:'Finality'}]},
+  {sym:'BNB',name:'BNB Chain',price:'RM 2,780',priceN:2780,chg:'-0.55',up:false,mcap:'RM 390B',ico:'B',bg:'rgba(240,185,11,.2)',col:'#F0B90B',cat:['L1'],
+   desc:'Binance\'s blockchain. EVM-compatible with low fees. Massive retail user base across SEA including Malaysia. PancakeSwap, Venus DeFi.',
+   tags:['EVM','Low Fees','CEX-backed','SEA Popular'],card:'ac-bnb',
+   stats:[{v:'2,000+',l:'TPS'},{v:'$5B+',l:'TVL'},{v:'RM ~0.01',l:'Avg Fee'}]},
+  {sym:'MATIC',name:'Polygon',price:'RM 1.42',priceN:1.42,chg:'+4.10',up:true,mcap:'RM 12B',ico:'▲',bg:'rgba(130,71,229,.2)',col:'#8247E5',cat:['L2'],
+   desc:'Ethereum scaling network — now pivoting to Polygon 2.0 with a ZK-powered L2. Bridges Ethereum to faster, cheaper transactions.',
+   tags:['Ethereum L2','zkEVM','Low Fees','POL Token'],card:'ac-matic',
+   stats:[{v:'7,000+',l:'TPS'},{v:'~0.001$',l:'Avg Fee'},{v:'$1B+',l:'TVL'}]},
+  {sym:'ARB',name:'Arbitrum',price:'RM 3.15',priceN:3.15,chg:'+2.88',up:true,mcap:'RM 25B',ico:'A',bg:'rgba(27,74,221,.2)',col:'#1B4ADD',cat:['L2'],
+   desc:'Largest Ethereum L2 by TVL. Optimistic rollup with ~1 week fraud proof window. Home to GMX, Camelot, Pendle, and dozens of DeFi protocols.',
+   tags:['Optimistic Rollup','Ethereum L2','Largest TVL','ARB DAO'],card:'ac-arb',
+   stats:[{v:'~40K',l:'TPS'},{v:'$15B+',l:'TVL'},{v:'$0.05',l:'Avg Fee'}]},
+  {sym:'OP',name:'Optimism',price:'RM 7.84',priceN:7.84,chg:'-1.22',up:false,mcap:'RM 18B',ico:'O',bg:'rgba(255,4,32,.2)',col:'#FF0420',cat:['L2'],
+   desc:'Ethereum L2 powering the Superchain. Coinbase\'s Base is built on the OP Stack. Retroactive public goods funding model via RetroPGF.',
+   tags:['OP Stack','Superchain','RetroPGF','Ethereum L2'],card:'ac-op',
+   stats:[{v:'~2,000',l:'TPS'},{v:'$8B+',l:'TVL'},{v:'$0.03',l:'Avg Fee'}]},
+  {sym:'AVAX',name:'Avalanche',price:'RM 178',priceN:178,chg:'+1.67',up:true,mcap:'RM 72B',ico:'A',bg:'rgba(232,65,66,.2)',col:'#E84142',cat:['L1'],
+   desc:'Three-chain architecture (X/C/P chains). Sub-2 second finality. Subnet model enables custom blockchains secured by AVAX validators.',
+   tags:['Subnets','EVM C-Chain','1s Finality','Avalanche9000'],card:'ac-avax',
+   stats:[{v:'4,500+',l:'TPS'},{v:'$2B+',l:'TVL'},{v:'~$0.10',l:'Avg Fee'}]},
+  {sym:'SUI',name:'Sui',price:'RM 14.20',priceN:14.20,chg:'+5.32',up:true,mcap:'RM 38B',ico:'S',bg:'rgba(77,162,255,.2)',col:'#4DA2FF',cat:['L1'],
+   desc:'Move-based blockchain with parallel transaction execution. 297K+ TPS, ~480ms finality. Growing DeFi ecosystem and NFT scene.',
+   tags:['Move Language','Parallel Exec','Object Model','zkLogin'],card:'ac-sui',
+   stats:[{v:'297K+',l:'TPS'},{v:'$3B+',l:'TVL'},{v:'480ms',l:'Finality'}]},
+  {sym:'LINK',name:'Chainlink',price:'RM 68.40',priceN:68.40,chg:'+2.15',up:true,mcap:'RM 40B',ico:'⬡',bg:'rgba(55,91,210,.2)',col:'#375BD2',cat:['DeFi'],
+   desc:'Decentralised oracle network. Powers the price feeds that virtually every DeFi protocol depends on. Also offers CCIP cross-chain messaging.',
+   tags:['Oracle','Price Feeds','CCIP','Data Streams'],card:'ac-link',
+   stats:[{v:'1,400+',l:'Integrations'},{v:'$20T+',l:'Value Secured'},{v:'CCIP',l:'Cross-Chain'}]},
+  {sym:'RENDER',name:'Render Network',price:'RM 32.10',priceN:32.10,chg:'+6.44',up:true,mcap:'RM 14B',ico:'🖥',bg:'rgba(255,100,0,.15)',col:'#FF6400',cat:['AI'],
+   desc:'Decentralised GPU rendering network. Artists and studios can access distributed compute power. Growing AI workload use case.',
+   tags:['GPU Compute','AI','Decentralised Render','Solana'],card:'ac-sol',
+   stats:[{v:'$32M+',l:'Render Value'},{v:'Growing',l:'AI Usage'},{v:'Solana',l:'Chain'}]},
+  {sym:'IMX',name:'Immutable X',price:'RM 7.60',priceN:7.60,chg:'-0.88',up:false,mcap:'RM 11B',ico:'🎮',bg:'rgba(0,200,220,.15)',col:'#00C8DC',cat:['Gaming','L2'],
+   desc:'Ethereum L2 built for gaming NFTs. Zero gas fees for minting and trading. Partners with major game studios. IMX staking rewards.',
+   tags:['Gaming','L2','Zero Gas NFTs','ZK Rollup'],card:'ac-sol',
+   stats:[{v:'Zero',l:'Mint Gas'},{v:'200+',l:'Games'},{v:'$5B+',l:'Tx Value'}]},
+  {sym:'APT',name:'Aptos',price:'RM 28.40',priceN:28.40,chg:'+1.88',up:true,mcap:'RM 11B',ico:'A',bg:'rgba(0,194,255,.2)',col:'#00C2FF',cat:['L1'],
+   desc:'Move-language L1 from Meta (Facebook) alumni. Parallel execution BFT consensus. Growing DeFi ecosystem including PancakeSwap deployment.',
+   tags:['Move Language','AptosBFT','Meta Alumni','Parallel Exec'],card:'ac-apt',
+   stats:[{v:'160K+',l:'TPS'},{v:'$1B+',l:'TVL'},{v:'~1s',l:'Finality'}]},
+];
+
+function renderAlts(filter){
+  const grid=document.getElementById('altGrid');
+  const filtered=filter==='all'?coins:coins.filter(c=>c.cat.includes(filter));
+  grid.innerHTML=filtered.map((c,i)=>`
+  <div class="alt-card ${c.card} rv d${(i%3)+1}" data-cat="${c.cat.join(',')}">
+    <div class="alt-top">
+      <div class="alt-left">
+        <div class="alt-logo" style="background:${c.bg};color:${c.col}">${c.ico}</div>
+        <div><div class="alt-coin-name">${c.name}</div><div class="alt-coin-sym">${c.sym}</div></div>
+      </div>
+      <div class="alt-price-col">
+        <div class="alt-price">${c.price}</div>
+        <div class="alt-chg-badge ${c.up?'up':'dn'}">${c.up?'▲':'▼'} ${c.chg}%</div>
+      </div>
+    </div>
+    <p class="alt-desc">${c.desc}</p>
+    <div class="alt-stats">${c.stats.map(s=>`<div class="as-item"><div class="v">${s.v}</div><div class="l">${s.l}</div></div>`).join('')}</div>
+    <div class="alt-tags">${c.tags.map(t=>`<span class="tag tag-b">${t}</span>`).join('')}</div>
+  </div>`).join('');
+  // re-observe new elements
+  document.querySelectorAll('.alt-card.rv:not(.in)').forEach(e=>obs.observe(e));
+}
+renderAlts('all');
+
+function filterAlts(cat,btn){
+  document.querySelectorAll('.cf-btn').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  renderAlts(cat);
+}
+
+// PRICE TICKER
+const tickerData=[
+  {sym:'ETH',price:'RM 17,840',chg:'+1.12%',up:true,col:'#627EEA'},
+  {sym:'SOL',price:'RM 753',chg:'+3.21%',up:true,col:'#9945FF'},
+  {sym:'BNB',price:'RM 2,780',chg:'-0.55%',up:false,col:'#F0B90B'},
+  {sym:'MATIC',price:'RM 1.42',chg:'+4.10%',up:true,col:'#8247E5'},
+  {sym:'ARB',price:'RM 3.15',chg:'+2.88%',up:true,col:'#1B4ADD'},
+  {sym:'AVAX',price:'RM 178',chg:'+1.67%',up:true,col:'#E84142'},
+  {sym:'SUI',price:'RM 14.20',chg:'+5.32%',up:true,col:'#4DA2FF'},
+  {sym:'LINK',price:'RM 68.40',chg:'+2.15%',up:true,col:'#375BD2'},
+];
+document.getElementById('priceTicker').innerHTML=tickerData.map(t=>`
+<div class="lt-coin">
+  <div class="lt-top">
+    <div class="lt-ico" style="background:${t.col}22;color:${t.col}">${t.sym[0]}</div>
+    <div><div class="lt-sym">${t.sym}</div><div class="lt-name">${t.sym}</div></div>
+  </div>
+  <div class="lt-price">${t.price}</div>
+  <div class="lt-chg ${t.up?'up':'dn'}">${t.up?'▲':'▼'} ${t.chg}</div>
+</div>`).join('');
+</script>
+</body>
+</html>
